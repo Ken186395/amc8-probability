@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AMC 8 几何讲解 · 3D 交互演示</title>
+  <title>AMC 8 Geometry · 3D Interactive Lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
@@ -55,7 +55,7 @@
       color: #111827;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
       cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease,
+      transition: transform 0.12s ease, boxshadow 0.12s ease,
         background 0.12s ease;
     }
 
@@ -114,13 +114,6 @@
       color: #3730a3;
     }
 
-    .select-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-
     label {
       font-size: 0.85rem;
       color: #4b5563;
@@ -133,11 +126,6 @@
       font-size: 0.9rem;
       outline: none;
       background: #f9fafb;
-    }
-
-    #problem-meta {
-      font-size: 0.8rem;
-      color: #6b7280;
     }
 
     .formula-card,
@@ -173,16 +161,6 @@
       color: #4b5563;
     }
 
-    .small-title {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9ca3af;
-      margin-bottom: 2px;
-    }
-
-    /* 控制面板（长宽高滑块） */
     .controls-panel {
       display: flex;
       flex-direction: column;
@@ -214,24 +192,6 @@
       font-weight: 600;
     }
 
-    .result-row {
-      font-size: 0.85rem;
-      color: #111827;
-      display: flex;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
-
-    .result-row span.result-label {
-      color: #4b5563;
-    }
-
-    .result-row span.result-value {
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* 右侧：3D 区域 */
     #three-container {
       flex: 1;
       border-radius: 16px;
@@ -252,17 +212,6 @@
       padding: 6px 10px;
       border-radius: 999px;
       backdrop-filter: blur(10px);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    #three-overlay span.key {
-      padding: 2px 6px;
-      border-radius: 6px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      font-size: 0.7rem;
-      background: rgba(15, 23, 42, 0.9);
     }
 
     #rendererCanvas {
@@ -279,162 +228,169 @@
       font-size: 0.82rem;
       color: #4b5563;
     }
-
-    @media (max-width: 900px) {
-      main {
-        flex-direction: column;
-      }
-      .left-panel {
-        flex: none;
-        width: 100%;
-        max-width: 100%;
-      }
-      .right-panel {
-        flex: none;
-        width: 100%;
-      }
-    }
   </style>
 </head>
 <body>
   <header>
     <div>
-      <h1>AMC 8 几何讲解 · 3D 交互实验室</h1>
-      <div class="sub-title">立体几何 · 体积表面积 · 可旋转动画演示</div>
+      <h1>AMC 8 Geometry · 3D Interactive Lab</h1>
+      <div class="sub-title">Volume · Surface Area · Nets · Spatial Visualization</div>
     </div>
-    <!-- 如果有首页，就把 href 改成你的 index.html -->
-    <a href="index.html">← 回到练习主页</a>
+    <a href="index.html">← Back to Home</a>
   </header>
 
   <main>
-    <!-- 左边：题目 + 讲解 + 数学计算 -->
+    <!-- Left Panel -->
     <section class="panel left-panel">
       <div class="section-title">
-        选择一个几何主题
+        Choose a Geometry Topic
         <span class="badge">AMC 8</span>
       </div>
+
       <div class="select-row">
-        <label for="problemSelect">题型：</label>
+        <label for="problemSelect">Topic:</label>
         <select id="problemSelect">
-          <option value="box">长方体体积 &amp; 表面积</option>
-          <option value="cube-net">正方体与展开图（网格）</option>
+          <option value="box">Rectangular Prism (Volume & Surface Area)</option>
+          <option value="cube-net">Cube & Net</option>
         </select>
         <div id="problem-meta"></div>
       </div>
 
-      <div class="small-title">公式回顾</div>
+      <div class="small-title">Formulas</div>
       <div class="formula-card">
         <div id="formula-text"></div>
         <div class="example-block" id="example-text"></div>
       </div>
 
-      <div class="small-title" style="margin-top: 8px;">思路提示（AMC 8 视角）</div>
+      <div class="small-title" style="margin-top:8px;">AMC 8 Strategy Tips</div>
       <div class="hint-card" id="hint-text"></div>
 
-      <!-- 控制面板（根据题型变化） -->
+      <!-- Rectangular Prism Controls -->
       <div class="controls-panel" id="box-controls">
-        <div class="small-title" style="margin-top: 4px;">交互参数（拖动滑块观察立体变化）</div>
+        <div class="small-title" style="margin-top:4px;">Adjust Dimensions</div>
+
         <div class="control-row">
-          <span class="label">长 L</span>
+          <span class="label">L</span>
           <input id="lenSlider" type="range" min="1" max="10" step="1" value="4" />
           <span class="value"><span id="lenValue">4</span> u</span>
         </div>
+
         <div class="control-row">
-          <span class="label">宽 W</span>
+          <span class="label">W</span>
           <input id="widSlider" type="range" min="1" max="10" step="1" value="3" />
           <span class="value"><span id="widValue">3</span> u</span>
         </div>
+
         <div class="control-row">
-          <span class="label">高 H</span>
+          <span class="label">H</span>
           <input id="heiSlider" type="range" min="1" max="10" step="1" value="2" />
           <span class="value"><span id="heiValue">2</span> u</span>
         </div>
 
         <div class="result-row">
-          <span class="result-label">体积 V：</span>
+          <span class="result-label">Volume:</span>
           <span class="result-value" id="volumeValue"></span>
         </div>
+
         <div class="result-row">
-          <span class="result-label">表面积 S：</span>
+          <span class="result-label">Surface Area:</span>
           <span class="result-value" id="surfaceValue"></span>
         </div>
       </div>
 
-      <div class="controls-panel" id="cube-controls" style="display: none;">
-        <div class="small-title" style="margin-top: 4px;">交互参数</div>
+      <!-- Cube Controls -->
+      <div class="controls-panel" id="cube-controls" style="display:none;">
+        <div class="small-title" style="margin-top:4px;">Adjust Edge Length</div>
+
         <div class="control-row">
-          <span class="label">棱长 a</span>
+          <span class="label">a</span>
           <input id="cubeSlider" type="range" min="1" max="8" step="1" value="3" />
           <span class="value"><span id="cubeValue">3</span> u</span>
         </div>
+
         <div class="result-row">
-          <span class="result-label">体积 V：</span>
+          <span class="result-label">Volume:</span>
           <span class="result-value" id="cubeVolume"></span>
         </div>
+
         <div class="result-row">
-          <span class="result-label">表面积 S：</span>
+          <span class="result-label">Surface Area:</span>
           <span class="result-value" id="cubeSurface"></span>
         </div>
+
         <div class="result-row">
-          <span class="result-label">展开图：</span>
-          <span class="result-value">6 个正方形拼成“十字形”</span>
+          <span class="result-label">Net:</span>
+          <span class="result-value">6 equal squares forming a cross shape</span>
         </div>
       </div>
     </section>
 
-    <!-- 右边：Three.js 3D 立体 -->
+    <!-- Right Panel (3D View) -->
     <section class="panel right-panel">
       <div class="section-title">
-        交互式 3D 演示
-        <span class="badge">拖动旋转</span>
+        3D Interactive Visualization
+        <span class="badge">Drag to Rotate</span>
       </div>
+
       <div id="three-container">
-        <div id="three-overlay">
-          <span>鼠标拖动旋转 · 滚轮缩放</span>
-        </div>
+        <div id="three-overlay">Drag to rotate · Scroll to zoom</div>
         <canvas id="rendererCanvas"></canvas>
       </div>
 
       <div class="tips-card">
-        🧠 <b>如何用在 AMC 8：</b>  
-        很多 AMC 8 题目不会直接给你“套公式”，而是会让你
+        🧠 <b>How this helps AMC 8:</b>
         <ul>
-          <li>看懂立体图（长方体 / 正方体 / 堆叠方块）</li>
-          <li>自己数出“长度、宽度、高度”或“几个小方块”</li>
-          <li>再把它们代入体积或表面积公式</li>
-          <li>有时还要把立体“展开”成平面来做周长/最短路径题</li>
+          <li>Visualize length, width, height clearly.</li>
+          <li>Understand how volume and surface area change when dimensions change.</li>
+          <li>Recognize cube nets and surface unfolding patterns.</li>
+          <li>Train spatial reasoning for 3D→2D conversion.</li>
         </ul>
-        建议 Lynne 自己拖动滑块和立体，多问自己两句：“这个数在图里代表哪一条边？”、“如果翻开变成展开图，会变成什么样子？”
       </div>
     </section>
   </main>
-
-  <!-- Three.js CDN -->
+  <!-- Three.js Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/examples/js/controls/OrbitControls.js"></script>
 
   <script>
-    // ====== 文本内容（题目讲解） ======
+    // =============================
+    // Text Content for Topics
+    // =============================
+
     const problems = {
       "box": {
-        meta: "常见考点：体积、表面积、盒子装多少东西、涂色、贴标签等。",
+        meta: "Common AMC 8 topic: volume, surface area, packing cubes, painting faces.",
         formula:
-          "长方体体积：<code>V = L × W × H</code><br>表面积：<code>S = 2(LW + LH + WH)</code>",
+          "Volume: <code>V = L × W × H</code><br>Surface Area: <code>S = 2(LW + LH + WH)</code>",
         example:
-          "例：一个长宽高分别为 4, 3, 2 的盒子，体积是多少？表面积是多少？<br>体积：4 × 3 × 2 = 24 立方单位<br>表面积：2(4×3 + 4×2 + 3×2) = 2(12 + 8 + 6) = 52 平方单位",
+          "Example: A rectangular prism with L=4, W=3, H=2.<br>Volume = 4 × 3 × 2 = 24 cubic units.<br>Surface Area = 2(12 + 8 + 6) = 52 sq units.",
         hint:
-          "AMC 8 里面经常会出现“一个长方体盒子装满小方块”之类的题：先用体积算出能装多少个小方块，或者用表面积算要涂多少面积油漆 / 粘多少纸。<br><br>做题时要特别注意：<ul><li>单位要统一，例如都用 cm 或都用 unit</li><li>某些边可能是“几块方砖拼起来的长度”，要数清楚</li><li>有时题目不会直接告诉你 L, W, H，需要从图里读出来</li></ul>"
+          "AMC 8 often gives box problems:<ul>" +
+          "<li>Count how many small cubes fit inside (use volume).</li>" +
+          "<li>Find how much paint or wrapping paper is needed (use surface area).</li>" +
+          "<li>Careful: lengths must be read correctly from diagrams.</li>" +
+          "<li>Units matter! Make sure all match.</li>" +
+          "</ul>"
       },
+
       "cube-net": {
-        meta: "常见考点：正方体体积、表面积、展开图、最短路径（小虫在盒子表面爬）。",
+        meta: "Cube volume, surface area, nets, shortest path on surfaces.",
         formula:
-          "正方体：每条棱长为 a，则<br>体积：<code>V = a³</code><br>表面积：<code>S = 6a²</code>",
+          "Volume: <code>V = a³</code><br>Surface Area: <code>S = 6a²</code>",
         example:
-          "例：一个正方体每条棱长 3，体积和表面积分别是多少？<br>体积：3³ = 27 立方单位<br>表面积：6 × 3² = 54 平方单位<br><br>展开图：6 个边长为 3 的小正方形。",
+          "Example: A cube with edge a = 3.<br>Volume = 27 cubic units.<br>Surface Area = 54 sq units.<br>Net: 6 equal squares.",
         hint:
-          "AMC 8 常见题型：<ul><li>给你一个展开图，问能不能折成正方体</li><li>小虫从一个顶点爬到另一个顶点，走的是“盒子表面最短路”，这时要把盒子“展开”后在平面上画一条直线</li><li>涂色题：比如“把正方体的外表面全部涂色，再切成 1×1×1 的小方块，有几个小方块有 3 个面被涂色？”</li></ul>理解展开图 = 实际上是在脑子里“把立体拆开摊平”，这对解空间几何题非常有帮助。"
+          "AMC 8 cube questions often ask:<ul>" +
+          "<li>Which nets can fold into a cube?</li>" +
+          "<li>Shortest path on a cube surface (flatten the net).</li>" +
+          "<li>Painted cube problems (count faces with 1, 2, or 3 painted sides).</li>" +
+          "</ul>"
       }
     };
+
+    // =============================
+    // HTML Elements
+    // =============================
 
     const problemSelect = document.getElementById("problemSelect");
     const metaEl = document.getElementById("problem-meta");
@@ -448,9 +404,11 @@
     const lenSlider = document.getElementById("lenSlider");
     const widSlider = document.getElementById("widSlider");
     const heiSlider = document.getElementById("heiSlider");
+
     const lenValue = document.getElementById("lenValue");
     const widValue = document.getElementById("widValue");
     const heiValue = document.getElementById("heiValue");
+
     const volumeValue = document.getElementById("volumeValue");
     const surfaceValue = document.getElementById("surfaceValue");
 
@@ -458,6 +416,10 @@
     const cubeValue = document.getElementById("cubeValue");
     const cubeVolume = document.getElementById("cubeVolume");
     const cubeSurface = document.getElementById("cubeSurface");
+
+    // =============================
+    // Update Text Section
+    // =============================
 
     function updateProblemText(key) {
       const p = problems[key];
@@ -479,25 +441,33 @@
       const L = Number(lenSlider.value);
       const W = Number(widSlider.value);
       const H = Number(heiSlider.value);
+
       lenValue.textContent = L;
       widValue.textContent = W;
       heiValue.textContent = H;
+
       const V = L * W * H;
       const S = 2 * (L * W + L * H + W * H);
-      volumeValue.textContent = `${V} 立方单位`;
-      surfaceValue.textContent = `${S} 平方单位`;
+
+      volumeValue.textContent = `${V} cubic units`;
+      surfaceValue.textContent = `${S} square units`;
     }
 
     function updateCubeMath() {
       const a = Number(cubeSlider.value);
       cubeValue.textContent = a;
+
       const V = a * a * a;
       const S = 6 * a * a;
-      cubeVolume.textContent = `${V} 立方单位`;
-      cubeSurface.textContent = `${S} 平方单位`;
+
+      cubeVolume.textContent = `${V} cubic units`;
+      cubeSurface.textContent = `${S} square units`;
     }
 
-    // ====== Three.js 场景搭建 ======
+    // =============================
+    // THREE.JS SETUP
+    // =============================
+
     let scene, camera, renderer, controls;
     let currentGroup = null;
 
@@ -508,9 +478,8 @@
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x0f172a);
 
-      const fov = 45;
       const aspect = container.clientWidth / container.clientHeight;
-      camera = new THREE.PerspectiveCamera(fov, aspect, 0.1, 100);
+      camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100);
       camera.position.set(6, 5, 8);
 
       renderer = new THREE.WebGLRenderer({
@@ -520,29 +489,24 @@
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(container.clientWidth, container.clientHeight);
 
-      // 光照
-      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x0f172a, 0.7);
-      scene.add(hemiLight);
+      // Lighting
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x0f172a, 0.7));
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-      dirLight.position.set(5, 10, 7);
-      scene.add(dirLight);
+      const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+      dir.position.set(5, 10, 7);
+      scene.add(dir);
 
-      const ambient = new THREE.AmbientLight(0xffffff, 0.2);
-      scene.add(ambient);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.2));
 
-      // 地板
+      // Ground Grid
       const grid = new THREE.GridHelper(20, 20, 0x6b7280, 0x111827);
       grid.position.y = -2;
       scene.add(grid);
 
-      // 轨道控制器
+      // Controls
       controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.08;
-      controls.rotateSpeed = 0.7;
-      controls.zoomSpeed = 0.7;
-      controls.target.set(0, 0, 0);
 
       window.addEventListener("resize", onWindowResize);
       animate();
@@ -550,11 +514,12 @@
 
     function onWindowResize() {
       const container = document.getElementById("three-container");
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      camera.aspect = width / height;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      renderer.setSize(w, h);
     }
 
     function animate() {
@@ -563,130 +528,136 @@
       renderer.render(scene, camera);
     }
 
-    // ====== 绘制长方体 ======
+    // =============================
+    // Draw Rectangular Prism
+    // =============================
+
     function createBox(L, W, H) {
       const group = new THREE.Group();
+      const geo = new THREE.BoxGeometry(L, H, W);
 
-      const geometry = new THREE.BoxGeometry(L, H, W);
-
-      // 主体
-      const material = new THREE.MeshStandardMaterial({
+      const mat = new THREE.MeshStandardMaterial({
         color: 0x4f46e5,
         metalness: 0.3,
         roughness: 0.25,
-        transparent: true,
-        opacity: 0.94
+        opacity: 0.95,
+        transparent: true
       });
 
-      const boxMesh = new THREE.Mesh(geometry, material);
-      group.add(boxMesh);
+      const mesh = new THREE.Mesh(geo, mat);
+      group.add(mesh);
 
-      // 线框
-      const edges = new THREE.EdgesGeometry(geometry);
-      const lineMaterial = new THREE.LineBasicMaterial({ color: 0xf9fafb });
-      const line = new THREE.LineSegments(edges, lineMaterial);
+      const edges = new THREE.EdgesGeometry(geo);
+      const line = new THREE.LineSegments(
+        edges,
+        new THREE.LineBasicMaterial({ color: 0xffffff })
+      );
       group.add(line);
 
-      // 轻微抬高
       group.position.y = H / 2 - 1;
-
       return group;
     }
 
-    // ====== 绘制正方体 + 展开图 ======
+    // =============================
+    // Draw Cube + Net
+    // =============================
+
     function createCubeWithNet(a) {
       const group = new THREE.Group();
 
-      // 正方体主体
       const cubeGeo = new THREE.BoxGeometry(a, a, a);
       const cubeMat = new THREE.MeshStandardMaterial({
         color: 0x10b981,
         metalness: 0.3,
         roughness: 0.25,
         transparent: true,
-        opacity: 0.94
+        opacity: 0.95
       });
+
       const cube = new THREE.Mesh(cubeGeo, cubeMat);
       const edges = new THREE.EdgesGeometry(cubeGeo);
-      const lineMat = new THREE.LineBasicMaterial({ color: 0xf9fafb });
-      const cubeLines = new THREE.LineSegments(edges, lineMat);
+      const outline = new THREE.LineSegments(
+        edges,
+        new THREE.LineBasicMaterial({ color: 0xffffff })
+      );
 
       const cubeGroup = new THREE.Group();
       cubeGroup.add(cube);
-      cubeGroup.add(cubeLines);
+      cubeGroup.add(outline);
       cubeGroup.position.set(-a * 1.3, 0, 0);
       group.add(cubeGroup);
 
-      // 展开图：6 个正方形摆成十字形
+      // Net
       const planeGeo = new THREE.PlaneGeometry(a, a);
       const planeMat = new THREE.MeshStandardMaterial({
         color: 0x0ea5e9,
         side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.9
+        opacity: 0.9,
+        transparent: true
       });
-      const edgeMat = new THREE.LineBasicMaterial({ color: 0x0f172a });
 
       const netGroup = new THREE.Group();
       const positions = [
-        [0, 0, 0], // 中心
+        [0, 0, 0],
         [0, a, 0],
         [0, -a, 0],
         [-a, 0, 0],
         [a, 0, 0],
-        [0, 0, a] // 想象为翻起来的一个面
+        [0, 0, a]
       ];
 
-      positions.forEach(([x, y, z], idx) => {
-        const plane = new THREE.Mesh(planeGeo, planeMat.clone());
-        const edgesPlane = new THREE.EdgesGeometry(planeGeo);
-        const outline = new THREE.LineSegments(edgesPlane, edgeMat);
+      positions.forEach(([x, y, z]) => {
+        const p = new THREE.Mesh(planeGeo, planeMat.clone());
+        const e = new THREE.EdgesGeometry(planeGeo);
+        const l = new THREE.LineSegments(
+          e,
+          new THREE.LineBasicMaterial({ color: 0x0f172a })
+        );
 
-        const one = new THREE.Group();
-        plane.position.set(0, 0, 0);
-        outline.position.set(0, 0, 0);
-        one.add(plane);
-        one.add(outline);
-        one.position.set(x, y, z);
-        netGroup.add(one);
+        const g = new THREE.Group();
+        g.add(p);
+        g.add(l);
+        g.position.set(x, y, z);
+        netGroup.add(g);
       });
 
-      // 把展开图平放在地面上（y 方向当成平面坐标）
       netGroup.rotation.x = -Math.PI / 2;
       netGroup.position.set(a * 1.6, -1.5, 0);
       group.add(netGroup);
 
-      // 整体稍微抬高
-      group.position.y = -0.2;
-
       return group;
     }
+
+    // =============================
+    // Update 3D View
+    // =============================
 
     function update3DForBox() {
       const L = Number(lenSlider.value);
       const W = Number(widSlider.value);
       const H = Number(heiSlider.value);
 
-      if (currentGroup) {
-        scene.remove(currentGroup);
-      }
+      if (currentGroup) scene.remove(currentGroup);
       currentGroup = createBox(L, W, H);
       scene.add(currentGroup);
     }
 
     function update3DForCube() {
       const a = Number(cubeSlider.value);
-      if (currentGroup) {
-        scene.remove(currentGroup);
-      }
+
+      if (currentGroup) scene.remove(currentGroup);
       currentGroup = createCubeWithNet(a);
       scene.add(currentGroup);
     }
 
-    // ====== 事件绑定 ======
+    // =============================
+    // Event Listeners
+    // =============================
+
     problemSelect.addEventListener("change", () => {
       const key = problemSelect.value;
       updateProblemText(key);
+
       if (key === "box") {
         updateBoxMath();
         update3DForBox();
@@ -700,10 +671,12 @@
       updateBoxMath();
       update3DForBox();
     });
+
     widSlider.addEventListener("input", () => {
       updateBoxMath();
       update3DForBox();
     });
+
     heiSlider.addEventListener("input", () => {
       updateBoxMath();
       update3DForBox();
@@ -714,12 +687,19 @@
       update3DForCube();
     });
 
-    // ====== 初始化 ======
+    // =============================
+    // INITIALIZE EVERYTHING
+    // =============================
+
     updateProblemText("box");
     updateBoxMath();
     updateCubeMath();
+
     initThree();
     update3DForBox();
   </script>
+
 </body>
 </html>
+
+
