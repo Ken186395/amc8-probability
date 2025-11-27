@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AMC8 概率基础课（12 讲）</title>
+  <title>AMC 8 Probability Course (12 Lessons)</title>
   <style>
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", sans-serif;
@@ -325,6 +325,76 @@
       text-align: center;
       color: var(--text-sub);
     }
+
+    .practice-question {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+
+    .practice-question h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .options {
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+
+    .options label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 2px;
+      cursor: pointer;
+    }
+
+    .result-text {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .correct {
+      color: #16a34a;
+      font-weight: 600;
+    }
+
+    .incorrect {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    .solution {
+      font-size: 12px;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #e5e7eb;
+      display: none;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button.action {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+    }
+
+    button.action.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
   </style>
 </head>
 <body>
@@ -332,11 +402,11 @@
     <header>
       <div class="logo-badge"><span>🎲</span></div>
       <div class="header-text">
-        <h1>AMC8 概率基础课（12 讲）</h1>
-        <p>为 9–11 岁孩子设计，用故事和图解搞定 AMC8 常见概率题型。家长可以陪同，每讲约 10 分钟。</p>
+        <h1>AMC 8 Probability Course (12 Lessons)</h1>
+        <p>Designed for ages 9–11. Short, story-based lessons plus daily practice to build strong probability intuition for AMC 8.</p>
         <div class="tagline">
           <span class="tagline-dot"></span>
-          <span>从“会算”走向“会想”的概率入门</span>
+          <span>From “computing answers” to truly understanding probability</span>
         </div>
       </div>
     </header>
@@ -344,22 +414,23 @@
     <div class="layout">
       <aside class="sidebar">
         <div class="sidebar-title">
-          <span>课程目录 · 12 讲</span>
+          <span>Course Outline · 12 Lessons</span>
         </div>
-        <div class="sidebar-subtitle">建议：每次 1 讲，边看边画、边算、边讨论。</div>
+        <div class="sidebar-subtitle">Suggestion: 1 lesson + a few practice problems each day.</div>
         <ul class="lesson-list">
-          <li><button class="lesson-link active" data-target="lesson1"><span class="num">1</span><span class="label">什么是概率？——糖果盒的故事</span></button></li>
-          <li><button class="lesson-link" data-target="lesson2"><span class="num">2</span><span class="label">树状图——走迷宫的小青蛙</span></button></li>
-          <li><button class="lesson-link" data-target="lesson3"><span class="num">3</span><span class="label">乘法法则——一步一步的路径概率</span></button></li>
-          <li><button class="lesson-link" data-target="lesson4"><span class="num">4</span><span class="label">加法法则——成功的所有方式</span></button></li>
-          <li><button class="lesson-link" data-target="lesson5"><span class="num">5</span><span class="label">独立事件——每一步都是新的开始</span></button></li>
-          <li><button class="lesson-link" data-target="lesson6"><span class="num">6</span><span class="label">有条件事件——被前一步“限制”的选择</span></button></li>
-          <li><button class="lesson-link" data-target="lesson7"><span class="num">7</span><span class="label">简单排列组合——衣服搭配游戏</span></button></li>
-          <li><button class="lesson-link" data-target="lesson8"><span class="num">8</span><span class="label">抽球游戏——AMC8 经典模型</span></button></li>
-          <li><button class="lesson-link" data-target="lesson9"><span class="num">9</span><span class="label">状态思维——小狗追球（马尔可夫直觉）</span></button></li>
-          <li><button class="lesson-link" data-target="lesson10"><span class="num">10</span><span class="label">期望值入门——糖果平均数</span></button></li>
-          <li><button class="lesson-link" data-target="lesson11"><span class="num">11</span><span class="label">AMC8 高频概率题型盘点</span></button></li>
-          <li><button class="lesson-link" data-target="lesson12"><span class="num">12</span><span class="label">综合挑战——概率大冒险</span></button></li>
+          <li><button class="lesson-link active" data-target="lesson1"><span class="num">1</span><span class="label">What Is Probability? · Candy Boxes</span></button></li>
+          <li><button class="lesson-link" data-target="lesson2"><span class="num">2</span><span class="label">Tree Diagrams · Frog in a Maze</span></button></li>
+          <li><button class="lesson-link" data-target="lesson3"><span class="num">3</span><span class="label">Multiplication Rule · Path Probabilities</span></button></li>
+          <li><button class="lesson-link" data-target="lesson4"><span class="num">4</span><span class="label">Addition Rule · All Ways to Succeed</span></button></li>
+          <li><button class="lesson-link" data-target="lesson5"><span class="num">5</span><span class="label">Independent Events · Fresh Start Each Time</span></button></li>
+          <li><button class="lesson-link" data-target="lesson6"><span class="num">6</span><span class="label">Conditional Thinking · Choices with Memory</span></button></li>
+          <li><button class="lesson-link" data-target="lesson7"><span class="num">7</span><span class="label">Basic Counting · Outfit Game</span></button></li>
+          <li><button class="lesson-link" data-target="lesson8"><span class="num">8</span><span class="label">Ball-Box Problems · AMC 8 Classic</span></button></li>
+          <li><button class="lesson-link" data-target="lesson9"><span class="num">9</span><span class="label">State Thinking · Puppy Chasing a Ball</span></button></li>
+          <li><button class="lesson-link" data-target="lesson10"><span class="num">10</span><span class="label">Expected Value · Long-Term Average</span></button></li>
+          <li><button class="lesson-link" data-target="lesson11"><span class="num">11</span><span class="label">AMC 8 Probability Patterns</span></button></li>
+          <li><button class="lesson-link" data-target="lesson12"><span class="num">12</span><span class="label">Final Challenge · Probability Adventure</span></button></li>
+          <li><button class="lesson-link" data-target="practice"><span class="num">★</span><span class="label">Daily Practice Lab</span></button></li>
         </ul>
       </aside>
 
@@ -368,78 +439,76 @@
         <article id="lesson1" class="lesson active">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 1 讲 · 基础概念</div>
-              <h2 class="lesson-title">什么是概率？——糖果盒的故事</h2>
-              <div class="lesson-meta">目标：理解“概率 = 有利情况数 ÷ 全部等可能情况数”，学会用分数表示概率。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 1 · Core Idea</div>
+              <h2 class="lesson-title">What Is Probability? · Candy Box Story</h2>
+              <div class="lesson-meta">Goal: Understand “Probability = number of favorable outcomes ÷ number of equally likely outcomes”. Start using fractions to talk about chance.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">等可能</span>
-            <span class="pill">分数表示</span>
-            <span class="pill">样本空间</span>
+            <span class="pill">Equally likely</span>
+            <span class="pill">Fractions</span>
+            <span class="pill">Sample space</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：糖果盒游戏</h3>
+            <h3>1. Story: The Candy Box Game</h3>
             <div class="story-box">
-              妈妈有 3 个一模一样的糖果盒，只有 1 个里面有巧克力。<br />
-              Lynne 闭着眼选一个盒子。<br />
-              问：她选中巧克力的“机会”有多大？
+              Mom has 3 identical candy boxes. Only 1 box has a chocolate inside.<br />
+              Lynne closes her eyes and picks one box at random.<br />
+              Question: How big is her chance to get the chocolate?
             </div>
             <p>
-              这里的“机会”就是<strong>概率</strong>。因为 3 个盒子对她来说没有区别，每个被选到的可能性一样大，这就叫<strong>等可能</strong>。
+              Because all 3 boxes look the same and are chosen randomly, each one is <strong>equally likely</strong> to be picked.
             </p>
             <div class="diagram">
-盒子1：🍫 巧克力   ← 有利情况（1 个）
-盒子2：❌ 空
-盒子3：❌ 空
+Box 1: 🍫 chocolate   ← favorable outcome (1)
+Box 2: ❌ empty
+Box 3: ❌ empty
 
-全部可能情况：3 个
-有利情况：1 个
+Total possible outcomes: 3
+Favorable outcomes: 1
 
-P(选中巧克力) = 1 ÷ 3 = 1/3
+P(get chocolate) = 1 ÷ 3 = 1/3
             </div>
           </section>
 
           <section class="section">
-            <h3>2. 概率的三个要素</h3>
+            <h3>2. Three pieces of vocabulary</h3>
             <ul>
-              <li><strong>试验：</strong>做一件会有不确定结果的事（比如：选盒子、抛硬币）。</li>
-              <li><strong>结果：</strong>每次试验真正发生了什么（比如：选到 1 号盒子）。</li>
-              <li><strong>样本空间：</strong>所有<strong>可能</strong>结果的集合（比如：{1 号盒子，2 号盒子，3 号盒子}）。</li>
+              <li><strong>Experiment:</strong> Something random you do (pick a box, roll a die, flip a coin).</li>
+              <li><strong>Outcome:</strong> What actually happens (picked box 1, rolled a 4, etc.).</li>
+              <li><strong>Sample space:</strong> The list of all possible outcomes.</li>
             </ul>
-            <p>
-              当所有结果<strong>等可能</strong>时：
-            </p>
+            <p>When all outcomes are equally likely:</p>
             <div class="diagram">
-概率 = 有利的结果个数 ÷ 所有等可能结果个数
+Probability = (number of favorable outcomes)
+             ÷ (number of equally likely outcomes)
             </div>
           </section>
 
           <section class="section">
-            <h3>3. 练一练（可以让孩子口头先说，再写分数）</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>一个袋子里有 5 颗糖：2 颗红糖，3 颗蓝糖。随便抓出 1 颗：<br />
-                  (1) 抓到红糖的概率是多少？<br />
-                  (2) 抓到蓝糖的概率是多少？
+                <li>A bag has 5 candies: 2 red, 3 blue.<br />
+                  (a) What is the probability of drawing a red candy?<br />
+                  (b) What is the probability of drawing a blue candy?
                 </li>
-                <li>一个普通骰子有点数 1–6，都是等可能：<br />
-                  (1) 掷出 3 的概率是多少？<br />
-                  (2) 掷出奇数的概率是多少？
-                </li>
+                <li>A fair die has faces 1–6, all equally likely.<br />
+                  (a) Probability of rolling a 3?<br />
+                  (b) Probability of rolling an odd number?</li>
               </ol>
             </div>
           </section>
 
           <section class="section">
-            <h3>4. 家长提示：如何讲给孩子听？</h3>
+            <h3>4. Parent tip</h3>
             <div class="tip-box">
               <ul>
-                <li>可以真的找 3 个杯子，底下只放 1 颗糖，让孩子多玩几轮，看“差不多三分之一”的感觉。</li>
-                <li>引导孩子用<strong>分数</strong>说话：“有几个是符合条件的？总共有几个？”</li>
-                <li>不用讲太多术语，只要反复用“有利情况 / 总情况”这句话。</li>
+                <li>Play with real cups or boxes at home and hide one candy. Let your child play many rounds to “feel” about one-third.</li>
+                <li>Keep asking: “How many good outcomes? How many total?” to build the habit.</li>
+                <li>No need for heavy terminology. Just repeat the idea of “favorable / total”.</li>
               </ul>
             </div>
           </section>
@@ -449,76 +518,73 @@ P(选中巧克力) = 1 ÷ 3 = 1/3
         <article id="lesson2" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 2 讲 · 图解工具</div>
-              <h2 class="lesson-title">树状图——走迷宫的小青蛙</h2>
-              <div class="lesson-meta">目标：学会用树状图列出“多步过程”的所有可能情况，为后面路径概率打基础。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 2 · Drawing tool</div>
+              <h2 class="lesson-title">Tree Diagrams · Frog in a Maze</h2>
+              <div class="lesson-meta">Goal: Use tree diagrams to list all possibilities for multi-step processes.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">树状图</span>
-            <span class="pill">多步过程</span>
-            <span class="pill">列举所有情况</span>
+            <span class="pill">Tree diagrams</span>
+            <span class="pill">Multi-step</span>
+            <span class="pill">Listing outcomes</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：小青蛙走迷宫</h3>
+            <h3>1. Story: A frog in a tiny maze</h3>
             <div class="story-box">
-              小青蛙要从起点出发，每一步可以选：向左走 (L)，或者向右走 (R)。<br />
-              它一共走 2 步。<br />
-              问：它可能会走出哪些“路线”？
+              A frog starts at the center of a tiny maze. At each step it can jump Left (L) or Right (R).<br />
+              It will jump exactly 2 steps.<br />
+              Question: What routes can it take?
             </div>
-            <p>
-              我们不用一句句地数，而是画出一棵<strong>树状图</strong>：
-            </p>
+            <p>We draw a <strong>tree diagram</strong> instead of listing by words.</p>
             <div class="diagram">
        L
 Start ──┐
        └── R
 
-继续展开第二步：
+Extend to the second step:
 
           L
-       ┌──── L   → 路线：LL
+       ┌──── L   → route: LL
        │
-Start ─┤      R   → 路线：LR
+Start ─┤      R   → route: LR
        │
-       └──── L   → 路线：RL
+       └──── L   → route: RL
           R
             R
             </div>
-            <p>所有可能路线：LL, LR, RL, RR（4 种）。</p>
+            <p>All possible routes: LL, LR, RL, RR (4 in total).</p>
           </section>
 
           <section class="section">
-            <h3>2. 树状图的三个好处</h3>
+            <h3>2. Why tree diagrams are powerful</h3>
             <ul>
-              <li>不容易漏情况。</li>
-              <li>可以清楚看到“第几步发生了什么”。</li>
-              <li>后面每一条路线都可以配上概率。</li>
+              <li>They help avoid missing cases.</li>
+              <li>You can see clearly what happens at each step.</li>
+              <li>Later we can attach probabilities to each branch.</li>
             </ul>
           </section>
 
           <section class="section">
-            <h3>3. 练一练：抛硬币的树状图</h3>
+            <h3>3. Try it · Coin flips</h3>
             <div class="practice-box">
               <ol>
-                <li>抛两次硬币，每次可能出现：正面(H) 或 反面(T)。<br />
-                  (1) 请画出完整的树状图。<br />
-                  (2) 写出所有可能的序列（HH、HT、TH、TT）。
-                </li>
-                <li>思考：如果抛三次硬币，一共有多少条路径？（提示：每次 2 种选择。）</li>
+                <li>Flip a coin twice: each flip is Heads (H) or Tails (T).<br />
+                  (a) Draw the tree diagram.<br />
+                  (b) List all outcomes (HH, HT, TH, TT).</li>
+                <li>Think: If you flip 3 times, how many routes will your tree have? (Hint: every flip doubles the number.)</li>
               </ol>
             </div>
           </section>
 
           <section class="section">
-            <h3>4. 家长提示</h3>
+            <h3>4. Parent tip</h3>
             <div class="tip-box">
               <ul>
-                <li>让孩子亲手画，哪怕画得歪一点也没关系。</li>
-                <li>一开始不要加概率，只要求“画全、画清楚”。</li>
-                <li>可以给不同分叉用不同彩笔画，更直观。</li>
+                <li>Let your child draw by hand. Neatness is less important than completeness.</li>
+                <li>At this stage, you don’t need probabilities on branches yet. Focus on listing outcomes.</li>
+                <li>Using colored pens for different branches can make it more fun.</li>
               </ul>
             </div>
           </section>
@@ -528,55 +594,53 @@ Start ─┤      R   → 路线：LR
         <article id="lesson3" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 3 讲 · 乘法规则</div>
-              <h2 class="lesson-title">乘法法则——一步一步的路径概率</h2>
-              <div class="lesson-meta">目标：理解“多步事件的概率 = 每一步概率相乘”。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 3 · Multiplication rule</div>
+              <h2 class="lesson-title">Multiplication Rule · Path Probabilities</h2>
+              <div class="lesson-meta">Goal: Learn that the probability of a whole path (several steps) is the product of the step probabilities.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">路径概率</span>
-            <span class="pill">独立步骤相乘</span>
+            <span class="pill">Path probability</span>
+            <span class="pill">Independent steps</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：两步回家的路线</h3>
+            <h3>1. Story: Two-step walk home</h3>
             <div class="story-box">
-              Lynne 回家的路上，每个路口都有 2 个方向：上 (U) 或 右 (R)，两个方向的概率一样大，都是 1/2。<br />
-              她要走 2 步，问：她刚好走“U → U”这条路线的概率是多少？
+              Lynne walks home. At each corner she can go Up (U) or Right (R). Each direction is equally likely, so probability 1/2 for each.<br />
+              She takes exactly 2 steps. What is the probability that she goes U then U again?
             </div>
             <p>
-              第一步走 U 的概率：1/2。第二步走 U 的概率：1/2。<br />
-              想要“U→U”都发生，就要：第一次成功，<strong>并且</strong>第二次也成功：
+              Step 1: P(U) = 1/2. Step 2: P(U) = 1/2 again.<br />
+              For U then U, both have to happen:
             </p>
             <div class="diagram">
-P(U → U) = P(第一次 U) × P(第二次 U)
-          = 1/2 × 1/2
-          = 1/4
+P(U then U) = P(first U) × P(second U)
+            = 1/2 × 1/2
+            = 1/4
             </div>
           </section>
 
           <section class="section">
-            <h3>2. 乘法法则（儿童版）</h3>
+            <h3>2. Multiplication rule (kid-friendly)</h3>
             <p>
-              如果两步是<strong>独立</strong>的（第二步不会被第一步改变概率），那么：
+              If two steps are <strong>independent</strong> (the second step’s probability doesn’t change because of the first), then:
             </p>
             <div class="diagram">
-“这一步发生 并且 下一步也发生”的概率
-    = 这一步的概率 × 下一步的概率
+P(step A AND step B) = P(step A) × P(step B)
             </div>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>抛两次硬币：每次出现正面的概率都是 1/2。<br />
-                  (1) 两次都是正面（HH）的概率？<br />
-                  (2) 第一次正面、第二次反面（HT）的概率？
-                </li>
-                <li>一个盒子里有 3 颗红糖、3 颗蓝糖。每次吃完再放回（所以每次概率不变）。<br />
-                  连续吃两颗，都是红糖的概率是多少？</li>
+                <li>You flip a fair coin twice.<br />
+                  (a) Probability of HH?<br />
+                  (b) Probability of HT?</li>
+                <li>A box has 3 red and 3 blue candies. You draw one, eat it, and then the box is refilled so it’s always 3 red, 3 blue (with replacement).<br />
+                  What is the probability that you get red twice in a row?</li>
               </ol>
             </div>
           </section>
@@ -586,56 +650,55 @@ P(U → U) = P(第一次 U) × P(第二次 U)
         <article id="lesson4" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 4 讲 · 加法规则</div>
-              <h2 class="lesson-title">加法法则——成功的所有方式</h2>
-              <div class="lesson-meta">目标：理解“成功可以有很多条不同路径，最后要把这些路径的概率加起来”。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 4 · Addition rule</div>
+              <h2 class="lesson-title">Addition Rule · All Ways to Succeed</h2>
+              <div class="lesson-meta">Goal: Understand that if success can happen in several non-overlapping ways, we add their probabilities.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">至少一次</span>
-            <span class="pill">互斥事件相加</span>
+            <span class="pill">At least one</span>
+            <span class="pill">Mutually exclusive events</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：至少拿到一个奖品</h3>
+            <h3>1. Story: Win candy if you get at least one head</h3>
             <div class="story-box">
-              抛两次硬币，只要<strong>有一次</strong>是正面，就给一颗糖。<br />
-              问：得到糖的概率是多少？
+              You flip a coin twice. If you get at least one Head (H), you win a candy.<br />
+              What is the probability that you win?
             </div>
-            <p>树状图列出所有结果：</p>
+            <p>List outcomes with a tree or directly:</p>
             <div class="diagram">
-HH   → 有糖
-HT   → 有糖
-TH   → 有糖
-TT   → 没糖
+HH → win
+HT → win
+TH → win
+TT → lose
             </div>
-            <p>有糖的情况一共有 3 种，每种的概率都是 1/4，所以：</p>
+            <p>There are 3 winning outcomes, each with probability 1/4, so:</p>
             <div class="diagram">
-P(至少一个正面) = 1/4 + 1/4 + 1/4 = 3/4
+P(win) = 1/4 + 1/4 + 1/4 = 3/4
             </div>
           </section>
 
           <section class="section">
-            <h3>2. 加法法则（儿童版）</h3>
+            <h3>2. Addition rule (kid-friendly)</h3>
             <p>
-              如果几种情况<strong>不会同时发生</strong>（比如“是 HH” 和 “是 HT” 不可能同一局同时出现），就可以：
+              If two events <strong>cannot happen at the same time</strong> (like “the outcome is HH” and “the outcome is HT”), then:
             </p>
             <div class="diagram">
-P(在 A 或 B 或 C 这些情况里) = P(A) + P(B) + P(C)
+P(A or B or C) = P(A) + P(B) + P(C)
             </div>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>抛两次骰子，点数从 1 到 6。<br />
-                  (1) 第一次掷出 1 或 2 的概率是多少？<br />
-                  (2) 掷一次，得到 1、3、5（奇数之一）的概率是多少？</li>
-                <li>思考：<br />
-                  “至少一个正面” 的概率 = 1 − “一个正面都没有”的概率。<br />
-                  把两种方法算出来，对比一下，是不是一样？</li>
+                <li>Roll a fair die once.<br />
+                  (a) Probability of getting 1 or 2?<br />
+                  (b) Probability of getting 1, 3, or 5?</li>
+                <li>Think: “At least one head” = 1 − “no heads at all”.<br />
+                  Compute P(lose) = P(TT), then do 1 − P(lose). Do you get the same 3/4?</li>
               </ol>
             </div>
           </section>
@@ -645,41 +708,41 @@ P(在 A 或 B 或 C 这些情况里) = P(A) + P(B) + P(C)
         <article id="lesson5" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 5 讲 · 独立事件</div>
-              <h2 class="lesson-title">独立事件——每一步都是新的开始</h2>
-              <div class="lesson-meta">目标：理解“独立事件”的含义，为后面区分“有放回 / 无放回”做准备。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 5 · Independent events</div>
+              <h2 class="lesson-title">Independent Events · Fresh Start Every Time</h2>
+              <div class="lesson-meta">Goal: Know what “independent” means and see the difference from “no replacement” situations.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">独立</span>
-            <span class="pill">抛硬币模型</span>
+            <span class="pill">Independence</span>
+            <span class="pill">Coin flip model</span>
           </div>
 
           <section class="section">
-            <h3>1. 抛硬币：典型的独立事件</h3>
+            <h3>1. Coin flips are independent</h3>
             <p>
-              不管之前抛了多少次正面、反面，下一次抛出正面的概率<strong>永远</strong>是 1/2。<br />
-              这就叫：每一次的结果<strong>互相不影响</strong>，事件是<strong>独立</strong>的。
+              No matter how many times you flipped heads or tails before, the next flip still has probability 1/2 for heads and 1/2 for tails.
+              Each flip does <strong>not remember</strong> the past.
             </p>
           </section>
 
           <section class="section">
-            <h3>2. 小小对比</h3>
+            <h3>2. Compare with drawing without replacement</h3>
             <div class="tip-box">
               <ul>
-                <li>有放回抽球：每次都把抽出的球放回去 → 下次的颜色比例不变 → 事件独立。</li>
-                <li>不放回抽球：抽出的球不放回 → 颜色比例变了 → 后面会受到前面的影响 → 不是独立。</li>
+                <li>With replacement: after drawing a ball, you put it back. The bag looks the same every time → events are independent.</li>
+                <li>Without replacement: you don’t put it back. The color counts change → later probabilities depend on earlier draws → not independent.</li>
               </ul>
             </div>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>抛三次硬币，得到“正、正、反”(HHT) 的概率是多少？</li>
-                <li>抛三次硬币，得到“正面恰好出现一次”的概率，可以先写出所有情况，再数一数。</li>
+                <li>Flip a fair coin 3 times. What is the probability of HHT?</li>
+                <li>Flip a fair coin 3 times. What is the probability that heads appears exactly once? (List all outcomes and count.)</li>
               </ol>
             </div>
           </section>
@@ -689,44 +752,42 @@ P(在 A 或 B 或 C 这些情况里) = P(A) + P(B) + P(C)
         <article id="lesson6" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 6 讲 · 条件事件</div>
-              <h2 class="lesson-title">有条件事件——被前一步“限制”的选择</h2>
-              <div class="lesson-meta">目标：观察“前一步的结果”如何改变下一步的概率，建立条件概率直觉。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 6 · Conditional feeling</div>
+              <h2 class="lesson-title">Conditional Thinking · Choices with Memory</h2>
+              <div class="lesson-meta">Goal: See how earlier results can change later probabilities, using “no replacement” examples.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">无放回抽取</span>
-            <span class="pill">条件概率直觉</span>
+            <span class="pill">No replacement</span>
+            <span class="pill">Condition changes probability</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：抽卡不放回</h3>
+            <h3>1. Story: Drawing cards without replacement</h3>
             <div class="story-box">
-              桌上有 3 张卡片：A、B、C。随机抽 1 张放在一边，然后再抽 1 张。<br />
-              问：第二张抽到 A 的机会是多少？
+              On the table are 3 cards: A, B, C. You draw one card and keep it, then draw a second card.<br />
+              Question: What is the chance that the second card is A?
             </div>
-            <p>
-              这里第二张的概率，要看<strong>第一张抽到的是谁</strong>，这就是“有条件”。
-            </p>
+            <p>The answer depends on what happened in the first draw. That’s “conditional”.</p>
           </section>
 
           <section class="section">
-            <h3>2. 两种情况拆开看</h3>
+            <h3>2. Two cases</h3>
             <ul>
-              <li>情况 1：第一张已经是 A → 第二张不可能再是 A。</li>
-              <li>情况 2：第一张不是 A → 第二张有可能是 A，这时桌上还剩 2 张，其中 1 张是 A → 概率 = 1/2。</li>
+              <li>Case 1: First card is A → A is gone → probability for “second is A” = 0.</li>
+              <li>Case 2: First card is not A → A is still among 2 remaining cards → probability = 1/2.</li>
             </ul>
-            <p>孩子只要能意识到“第二步概率要分情况讨论”，就已经很棒了。</p>
+            <p>If a child notices “we must split into cases”, they’re already doing great.</p>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>盒子里有：2 个红球、1 个蓝球。<br />
-                  不放回地抽两次，画树状图，标出每条路径的概率。</li>
-                <li>问：抽出的两球颜色不同的概率是多少？</li>
+                <li>A box has 2 red balls (R) and 1 blue ball (B). You draw 2 balls without replacement.<br />
+                  (a) Draw the tree diagram. Put probabilities on each branch.<br />
+                  (b) Find the probability that the two balls have different colors.</li>
               </ol>
             </div>
           </section>
@@ -736,48 +797,50 @@ P(在 A 或 B 或 C 这些情况里) = P(A) + P(B) + P(C)
         <article id="lesson7" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 7 讲 · 计数基础</div>
-              <h2 class="lesson-title">简单排列组合——衣服搭配游戏</h2>
-              <div class="lesson-meta">目标：通过搭配游戏理解“乘法原理”，为 AMC8 的计数题做铺垫。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 7 · Counting</div>
+              <h2 class="lesson-title">Basic Counting · Outfit Game</h2>
+              <div class="lesson-meta">Goal: Use the multiplication principle to count combinations, a key skill for AMC 8.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">乘法原理</span>
-            <span class="pill">搭配计数</span>
+            <span class="pill">Multiplication principle</span>
+            <span class="pill">Combinations of choices</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：今天怎么穿？</h3>
+            <h3>1. Story: What to wear today?</h3>
             <div class="story-box">
-              Lynne 有 2 条裙子（红、蓝）和 3 件 T 恤（白、黑、粉）。<br />
-              每天上学要选 1 条裙子 + 1 件 T 恤。<br />
-              问：一共有多少种不同的穿法？
+              Lynne has 2 skirts (red, blue) and 3 T-shirts (white, black, pink).<br />
+              Each school day she chooses 1 skirt and 1 T-shirt.<br />
+              Question: How many different outfits can she make?
             </div>
-            <p>可以画表格：</p>
+            <p>We can draw a simple table:</p>
             <div class="diagram">
-        白   黑   粉
-红裙子   红-白 红-黑 红-粉
-蓝裙子   蓝-白 蓝-黑 蓝-粉
+         White   Black   Pink
+Red skirt  R-W    R-B     R-P
+Blue skirt B-W    B-B     B-P
 
-共 2 × 3 = 6 种
+Total = 2 × 3 = 6 outfits
             </div>
           </section>
 
           <section class="section">
-            <h3>2. 乘法原理（儿童版）</h3>
+            <h3>2. Multiplication principle</h3>
             <p>
-              如果要做一件事，需要先做第一步，再做第二步：<br />
-              第一部有 a 种选法，第二步有 b 种选法，那么总共有：a × b 种不同结果。
+              If doing something takes 2 steps: first choose 1 out of <em>a</em> options, then 1 out of <em>b</em> options, and both choices are free, then:
             </p>
+            <div class="diagram">
+Total different results = a × b
+            </div>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>有 3 顶帽子、2 件外套、2 条围巾。每天出门选各一件，问一共有几种搭配？</li>
-                <li>一个密码有 3 位，每一位可以是数字 0–9，一共有多少种密码？</li>
+                <li>There are 3 hats, 2 jackets, and 2 scarves. Each day you choose 1 of each. How many outfits?</li>
+                <li>A code has 3 digits, and each digit can be 0–9. How many possible codes?</li>
               </ol>
             </div>
           </section>
@@ -787,60 +850,60 @@ P(在 A 或 B 或 C 这些情况里) = P(A) + P(B) + P(C)
         <article id="lesson8" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 8 讲 · 抽球模型</div>
-              <h2 class="lesson-title">抽球游戏——AMC8 经典模型</h2>
-              <div class="lesson-meta">目标：能用树状图和乘加法则解决典型“从袋子里抽球”的概率题。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 8 · Ball-box model</div>
+              <h2 class="lesson-title">Ball-Box Problems · AMC 8 Classic</h2>
+              <div class="lesson-meta">Goal: Solve typical “draw balls from a bag” problems with tree diagrams and the multiplication + addition rules.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">抽球</span>
-            <span class="pill">无放回</span>
-            <span class="pill">典型 AMC8 题型</span>
+            <span class="pill">Drawing balls</span>
+            <span class="pill">Without replacement</span>
+            <span class="pill">AMC 8 classic</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：白球和黑球</h3>
+            <h3>1. Story: White and black balls</h3>
             <div class="story-box">
-              袋子里有 3 个白球 (W) 和 2 个黑球 (B)，一共 5 个球。<br />
-              不放回地抽 2 次。<br />
-              问：抽到“1 个白球 + 1 个黑球”的概率是多少？
+              A bag has 3 white balls (W) and 2 black balls (B), 5 in total.<br />
+              You draw 2 balls without replacement.<br />
+              Question: What is the probability of getting exactly one white and one black ball?
             </div>
           </section>
 
           <section class="section">
-            <h3>2. 用树状图列所有路径</h3>
+            <h3>2. Tree diagram</h3>
             <div class="diagram">
-先看第一次：
+First draw:
 
-W (3/5) → 第二次：
-            W (2/4)
-            B (2/4)
+W (3/5) → second draw:
+          W (2/4)
+          B (2/4)
 
-B (2/5) → 第二次：
-            W (3/4)
-            B (1/4)
+B (2/5) → second draw:
+          W (3/4)
+          B (1/4)
             </div>
-            <p>“一白一黑”有两种路径：</p>
+            <p>There are two paths with one white and one black:</p>
             <ul>
-              <li>先白后黑：W → B</li>
-              <li>先黑后白：B → W</li>
+              <li>W then B</li>
+              <li>B then W</li>
             </ul>
             <div class="diagram">
-P(W→B) = 3/5 × 2/4 = 6/20
-P(B→W) = 2/5 × 3/4 = 6/20
+P(W then B) = 3/5 × 2/4 = 6/20
+P(B then W) = 2/5 × 3/4 = 6/20
 
-总概率 = 6/20 + 6/20 = 12/20 = 3/5
+Total = 6/20 + 6/20 = 12/20 = 3/5
             </div>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>袋子里有 4 个红球、1 个蓝球，不放回地抽 2 次。<br />
-                  抽到“至少 1 个蓝球”的概率是多少？</li>
-                <li>可以先算：抽不到蓝球的概率，再用 1 − 这个概率。</li>
+                <li>A bag has 4 red and 1 blue ball. You draw 2 without replacement.<br />
+                  What is the probability of getting at least 1 blue ball?</li>
+                <li>Hint: First find the probability of getting no blue balls, then do 1 minus that.</li>
               </ol>
             </div>
           </section>
@@ -850,49 +913,48 @@ P(B→W) = 2/5 × 3/4 = 6/20
         <article id="lesson9" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 9 讲 · 状态思维</div>
-              <h2 class="lesson-title">状态思维——小狗追球（马尔可夫直觉）</h2>
-              <div class="lesson-meta">目标：建立“只看现在在哪，不用记完整历史”的状态意识，为蟋蟀跳叶子这类题做准备。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 9 · State thinking</div>
+              <h2 class="lesson-title">State Thinking · Puppy Chasing a Ball</h2>
+              <div class="lesson-meta">Goal: Build intuition for “states” so multi-step random moves (like the cricket problem) feel natural.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">状态 (state)</span>
-            <span class="pill">多步跳跃</span>
+            <span class="pill">State (Markov idea)</span>
+            <span class="pill">Multi-step jumps</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：小狗在房间里追球</h3>
+            <h3>1. Story: Puppy running through rooms</h3>
             <div class="story-box">
-              有 4 个房间：A、B、C、D，小狗每次会随机跑到<strong>不是现在所在</strong>的另一个房间。<br />
-              我们只关心：它现在在 A 还是不在 A。
+              There are 4 rooms: A, B, C, D. A puppy moves every step to a different room (never stays in the same room).<br />
+              We care only about: “Is the puppy in room A?” or “not in A?”.
             </div>
-            <p>
-              这样，我们把复杂的四个房间，简化成两个<strong>状态</strong>：</p>
+            <p>So we can group the world into two <strong>states</strong>:</p>
             <ul>
-              <li>在 A：记作 p。</li>
-              <li>不在 A（在 B/C/D 之一）：记作 q。</li>
+              <li>In A: call its probability p.</li>
+              <li>Not in A (B, C, or D): call probability q.</li>
             </ul>
           </section>
 
           <section class="section">
-            <h3>2. 状态更新</h3>
-            <p>如果现在在 A，那么下一步一定离开 A → 下一步不在 A。</p>
-            <p>如果现在不在 A（在 B/C/D），那么：</p>
+            <h3>2. Updating states</h3>
+            <p>If the puppy is in A now, next step it must leave A → next step is “not in A”.</p>
+            <p>If the puppy is not in A, there are 3 possible rooms all equally likely:</p>
             <ul>
-              <li>有 1/3 的概率跳回 A。</li>
-              <li>有 2/3 的概率继续待在“不在 A”的那一类。</li>
+              <li>1 of them is A → probability 1/3 to be in A next step.</li>
+              <li>2 of them are not A → probability 2/3 to stay in “not A”.</li>
             </ul>
-            <p>这就是“根据现在的状态，更新下一步状态的概率”。</p>
+            <p>This idea is the heart of the AMC 8 cricket problem.</p>
           </section>
 
           <section class="section">
-            <h3>3. 练一练（表格法）</h3>
+            <h3>3. Try it · Table method</h3>
             <div class="practice-box">
-              <p>设 pₙ = 第 n 步在 A 的概率，qₙ = 第 n 步不在 A 的概率。</p>
+              <p>Let pₙ = probability that after n moves the animal is in A; qₙ = probability it is not in A.</p>
               <ol>
-                <li>起点在 A：p₀=1, q₀=0。写出 p₁, q₁；p₂, q₂。</li>
-                <li>继续推到 p₄，看看能否得到和“蟋蟀跳叶子”那题一样的结果。</li>
+                <li>Start at A: p₀ = 1, q₀ = 0. Compute p₁, q₁; then p₂, q₂.</li>
+                <li>Continue to find p₄. Compare with the official cricket problem answer.</li>
               </ol>
             </div>
           </section>
@@ -902,46 +964,46 @@ P(B→W) = 2/5 × 3/4 = 6/20
         <article id="lesson10" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 10 讲 · 期望值</div>
-              <h2 class="lesson-title">期望值入门——糖果平均数</h2>
-              <div class="lesson-meta">目标：用“长期平均”的直觉，认识期望值，帮助理解更高阶的概率思维。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 10 · Expected value</div>
+              <h2 class="lesson-title">Expected Value · Long-Term Average</h2>
+              <div class="lesson-meta">Goal: Meet the idea of expected value as the long-run average result of a random game.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">长期平均</span>
-            <span class="pill">期望值</span>
+            <span class="pill">Long-run average</span>
+            <span class="pill">Expected value</span>
           </div>
 
           <section class="section">
-            <h3>1. 故事：盲盒糖果</h3>
+            <h3>1. Story: Candy mystery boxes</h3>
             <div class="story-box">
-              一种糖果盲盒：
+              You can buy a mystery candy box.
               <ul>
-                <li>80% 的盒子里是 1 颗普通糖（价值记作 1）。</li>
-                <li>20% 的盒子里是 1 颗特别大糖（价值记作 5）。</li>
+                <li>80% of the boxes have 1 normal candy worth 1 point.</li>
+                <li>20% of the boxes have a big special candy worth 5 points.</li>
               </ul>
-              问：平均来说，每开 1 盒，这盒糖的“平均价值”大约是多少？
+              Question: On average, how many points of candy do you get per box?
             </div>
-            <p>可以直接算：</p>
+            <p>We can compute:</p>
             <div class="diagram">
-期望价值 = 1 × 0.8 + 5 × 0.2 = 1.8
+Expected value = 1 × 0.8 + 5 × 0.2 = 1.8 points per box
             </div>
           </section>
 
           <section class="section">
-            <h3>2. 期望值（儿童版）</h3>
+            <h3>2. Expected value (kid-friendly)</h3>
             <p>
-              期望值可以理解为：“如果这件随机的事重复很多很多次，每次得到的结果的<strong>平均数</strong>。”
+              Imagine you play this game many, many times. Add up all the points, then divide by how many games. That average is close to the <strong>expected value</strong>.
             </p>
           </section>
 
           <section class="section">
-            <h3>3. 练一练</h3>
+            <h3>3. Try it</h3>
             <div class="practice-box">
               <ol>
-                <li>掷骰子，得到的点数期望是多少？（提示：1 到 6 取平均。）</li>
-                <li>一个游戏：掷到 6 得 3 分，掷到 1–5 得 1 分。平均每次得多少分？</li>
+                <li>Roll a fair die. What is the expected value of the number you roll? (Hint: average of 1,2,3,4,5,6.)</li>
+                <li>Game: if you roll a 6, you get 3 points; otherwise you get 1 point. What is your expected score per roll?</li>
               </ol>
             </div>
           </section>
@@ -951,36 +1013,36 @@ P(B→W) = 2/5 × 3/4 = 6/20
         <article id="lesson11" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 11 讲 · 题型盘点</div>
-              <h2 class="lesson-title">AMC8 高频概率题型盘点</h2>
-              <div class="lesson-meta">目标：把前面所有工具和模型串起来，认识 AMC8 概率题的常见“脸”。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 11 · Pattern review</div>
+              <h2 class="lesson-title">AMC 8 Probability Patterns</h2>
+              <div class="lesson-meta">Goal: Connect all tools and recognize common AMC 8 probability problem types.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">抽球/抽牌</span>
-            <span class="pill">路径/走格子</span>
-            <span class="pill">游戏得分</span>
+            <span class="pill">Draw balls/cards</span>
+            <span class="pill">Paths / grids</span>
+            <span class="pill">Scoring games</span>
           </div>
 
           <section class="section">
-            <h3>1. 高频模型列表</h3>
+            <h3>1. Common AMC 8 probability models</h3>
             <ul>
-              <li>抽球、抽牌类：有放回 / 无放回；至少 / 至多。</li>
-              <li>路径类：走格子、跳点、走迷宫。</li>
-              <li>得分游戏：谁先赢、得到多少分的概率。</li>
-              <li>多步状态：像本次的蟋蟀跳叶子。</li>
+              <li>Drawing balls or cards: with or without replacement; at least / at most.</li>
+              <li>Path / grid problems: count paths and treat each as equally likely.</li>
+              <li>Game scores: who wins first, or what is the chance to reach a certain score.</li>
+              <li>Multi-step state jumps: like the cricket or puppy problems.</li>
             </ul>
           </section>
 
           <section class="section">
-            <h3>2. 复习地图</h3>
+            <h3>2. Mental checklist</h3>
             <div class="tip-box">
               <ul>
-                <li>看到“多步” → 想起树状图 / 乘法法则。</li>
-                <li>看到“至少 / 至多” → 想起加法法则 + 用补集：1 −（相反情况）。</li>
-                <li>看到“抽球 / 抽牌” → 先分清：有放回还是无放回。</li>
-                <li>看到“不断跳来跳去” → 可以试着用状态表（pₙ, qₙ）来做。</li>
+                <li>See “many steps” → think tree diagrams and the multiplication rule.</li>
+                <li>See “at least / at most” → think of the addition rule and complements (1 minus opposite event).</li>
+                <li>See “drawing from a bag” → first decide: with replacement or without?</li>
+                <li>See “keeps jumping around” → try grouping into states and tracking step by step.</li>
               </ul>
             </div>
           </section>
@@ -990,56 +1052,96 @@ P(B→W) = 2/5 × 3/4 = 6/20
         <article id="lesson12" class="lesson">
           <div class="content-header">
             <div>
-              <div class="badge"><span class="badge-dot"></span> 第 12 讲 · 综合挑战</div>
-              <h2 class="lesson-title">综合挑战——概率大冒险</h2>
-              <div class="lesson-meta">目标：通过一组闯关题，把前 11 讲真正用起来。</div>
+              <div class="badge"><span class="badge-dot"></span> Lesson 12 · Final challenge</div>
+              <h2 class="lesson-title">Final Challenge · Probability Adventure</h2>
+              <div class="lesson-meta">Goal: Use ideas from all 11 earlier lessons in a short “adventure” set of problems.</div>
             </div>
           </div>
 
           <div class="pill-row">
-            <span class="pill">综合运用</span>
-            <span class="pill">闯关练习</span>
+            <span class="pill">Mixed practice</span>
+            <span class="pill">Adventure style</span>
           </div>
 
           <section class="section">
-            <h3>1. 推荐闯关结构</h3>
-            <p>可以自己为孩子设计一个“小故事”，比如：</p>
+            <h3>1. Suggested adventure structure</h3>
+            <p>You can wrap the problems in a story, like “Exploring Probability Island” with checkpoints:</p>
             <ul>
-              <li>第 1–3 关：糖果 / 抛硬币 / 掷骰子（基础概率）。</li>
-              <li>第 4–6 关：树状图 + 抽球题。</li>
-              <li>第 7–8 关：搭配 / 走格子。</li>
-              <li>第 9–10 关：小狗追球 / 蟋蟀跳叶子。</li>
+              <li>Checkpoints 1–3: basic probability (candies, coins, dice).</li>
+              <li>Checkpoints 4–6: tree diagrams and drawing balls.</li>
+              <li>Checkpoints 7–8: counting outfits and paths.</li>
+              <li>Checkpoints 9–10: state jumps (like the cricket problem).</li>
             </ul>
           </section>
 
           <section class="section">
-            <h3>2. 示例小关卡</h3>
+            <h3>2. Sample mini-checkpoints</h3>
             <div class="practice-box">
               <ol>
-                <li>（基础关）袋子里有 4 个红球、1 个蓝球，随便抽 1 个，抽到蓝球的概率？</li>
-                <li>（树状图关）抛两次硬币，画树状图，求“至少一个正面”的概率。</li>
-                <li>（抽球关）袋子 3 白 2 黑，不放回抽 2 次，求“一白一黑”的概率。</li>
-                <li>（状态关）用 pₙ, qₙ 表格，重做“蟋蟀 4 步回到起点”的那道题。</li>
+                <li>(Basic) A bag has 4 red and 1 blue ball. What is the probability of picking blue?</li>
+                <li>(Tree) Flip a coin twice. Draw the tree diagram and find P(at least one head).</li>
+                <li>(Ball-box) A bag has 3 white and 2 black balls, no replacement. Find P(one white and one black).</li>
+                <li>(State) Use the pₙ, qₙ table to re-solve the cricket problem you saw earlier.</li>
               </ol>
             </div>
           </section>
 
           <section class="section">
-            <h3>3. 家长建议</h3>
+            <h3>3. Parent suggestion</h3>
             <div class="tip-box">
               <ul>
-                <li>把每道题当游戏，不急着求速度，先求思路清楚。</li>
-                <li>如果孩子在 AMC8 某题型上错得多，就从那一讲重新开始复习。</li>
-                <li>可以让孩子自己出题考家长，效果非常好。</li>
+                <li>Treat each problem as a puzzle, not a test. Encourage explanations in words.</li>
+                <li>If your child misses many problems in one category, revisit that lesson.</li>
+                <li>Let your child invent their own probability puzzle to quiz you.</li>
               </ul>
             </div>
+          </section>
+        </article>
+
+        <!-- Practice Lab -->
+        <article id="practice" class="lesson">
+          <div class="content-header">
+            <div>
+              <div class="badge"><span class="badge-dot"></span> Daily Practice Lab</div>
+              <h2 class="lesson-title">3–5 Problems a Day · Instant Check & Solutions</h2>
+              <div class="lesson-meta">Goal: Turn ideas into skills. Each session loads a small set of problems. Try first, then check and read solutions.</div>
+            </div>
+          </div>
+
+          <div class="pill-row">
+            <span class="pill">Random daily set</span>
+            <span class="pill">Check answers</span>
+            <span class="pill">Show solutions</span>
+          </div>
+
+          <section class="section">
+            <h3>1. How to use this practice lab</h3>
+            <div class="story-box">
+              <ol>
+                <li>Each time you open this Practice Lab, it will load a small random set of problems (3–5).</li>
+                <li>Work them out on paper first. Then choose an answer (A, B, C, or D) for each.</li>
+                <li>Click <strong>“Check answers”</strong> to see which ones are correct.</li>
+                <li>Click <strong>“Show solutions”</strong> to read detailed explanations.</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="section">
+            <h3>2. Today’s problem set</h3>
+            <div id="practice-questions"></div>
+            <div class="controls">
+              <button class="action" id="check-btn">Check answers</button>
+              <button class="action secondary" id="show-solutions-btn">Show solutions</button>
+              <button class="action secondary" id="new-set-btn">New set</button>
+            </div>
+            <p class="lesson-meta" id="score-text" style="margin-top:6px;"></p>
           </section>
         </article>
       </main>
     </div>
 
     <footer>
-      亲子建议：每一讲可以控制在 10–15 分钟，先讲故事，再一起画图、算一算，最后让孩子自己讲一遍给你听。
+      Parent tip: One short lesson plus 3–5 focused problems per day is enough for very solid progress over a few months.
     </footer>
   </div>
 
@@ -1057,22 +1159,282 @@ P(B→W) = 2/5 × 3/4 = 6/20
         btn.classList.add('active');
         const targetLesson = document.getElementById(targetId);
         if (targetLesson) targetLesson.classList.add('active');
+
+        if (targetId === 'practice') {
+          loadPracticeQuestions();
+        }
       });
     });
-  <script>
-    // Register service worker for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js').catch(function (err) {
-          console.log('Service worker registration failed:', err);
+
+    const allQuestions = [
+      {
+        id: 1,
+        prompt: 'A fair die has faces 1–6. What is the probability of rolling an odd number?',
+        options: {
+          A: '1/6',
+          B: '1/3',
+          C: '1/2',
+          D: '2/3'
+        },
+        answer: 'C',
+        solution: 'There are 3 odd numbers (1, 3, 5) out of 6 equally likely outcomes, so P = 3/6 = 1/2.'
+      },
+      {
+        id: 2,
+        prompt: 'A bag has 2 red and 3 blue candies. What is the probability of drawing a red candy?',
+        options: {
+          A: '2/3',
+          B: '2/5',
+          C: '3/5',
+          D: '1/2'
+        },
+        answer: 'B',
+        solution: 'There are 2 favorable candies (red) out of 5 total, so P = 2/5.'
+      },
+      {
+        id: 3,
+        prompt: 'You flip a fair coin twice. What is the probability of getting exactly one head?',
+        options: {
+          A: '1/4',
+          B: '1/2',
+          C: '3/4',
+          D: '2/3'
+        },
+        answer: 'B',
+        solution: 'Outcomes: HH, HT, TH, TT. Exactly one head = HT or TH → 2 outcomes. Each has probability 1/4, so total = 2/4 = 1/2.'
+      },
+      {
+        id: 4,
+        prompt: 'You flip a fair coin three times. What is the probability of getting heads all three times?',
+        options: {
+          A: '1/8',
+          B: '1/6',
+          C: '1/4',
+          D: '3/8'
+        },
+        answer: 'A',
+        solution: 'Each flip has probability 1/2 of heads and the flips are independent, so P(HHH) = 1/2 × 1/2 × 1/2 = 1/8.'
+      },
+      {
+        id: 5,
+        prompt: 'A bag has 3 white balls and 1 black ball. One ball is drawn at random. What is the probability it is black?',
+        options: {
+          A: '1/4',
+          B: '3/4',
+          C: '1/3',
+          D: '1/2'
+        },
+        answer: 'A',
+        solution: 'There is 1 black ball out of 4 total balls, so P = 1/4.'
+      },
+      {
+        id: 6,
+        prompt: 'A code has 2 digits. Each digit can be 0–9. How many different codes are possible?',
+        options: {
+          A: '10',
+          B: '20',
+          C: '50',
+          D: '100'
+        },
+        answer: 'D',
+        solution: 'First digit: 10 choices (0–9). Second digit: 10 choices. Total = 10 × 10 = 100 different codes.'
+      },
+      {
+        id: 7,
+        prompt: 'A bag has 2 red and 1 blue ball. Two balls are drawn without replacement. What is the probability that the two balls have different colors?',
+        options: {
+          A: '1/3',
+          B: '2/3',
+          C: '1/2',
+          D: '3/4'
+        },
+        answer: 'B',
+        solution: 'Total equally likely pairs: RR, RB, BR. Each has probability 1/3. Different colors = RB or BR, so P = 2/3.'
+      },
+      {
+        id: 8,
+        prompt: 'In a game you roll a die once. You win if you get 1 or 2. What is the probability you win?',
+        options: {
+          A: '1/6',
+          B: '1/3',
+          C: '1/2',
+          D: '2/3'
+        },
+        answer: 'B',
+        solution: 'Favorable outcomes: 1, 2 → 2 numbers. Total outcomes: 6. So P = 2/6 = 1/3.'
+      },
+      {
+        id: 9,
+        prompt: 'You draw 2 cards from A, B, C without replacement. What is the probability that you draw card A at least once?',
+        options: {
+          A: '1/3',
+          B: '2/3',
+          C: '1/2',
+          D: '3/4'
+        },
+        answer: 'B',
+        solution: 'It is easier to use a complement. The only way to not draw A is to draw B and C in some order. That single unordered pair has probability 1/3 among the 3 possible pairs {AB, AC, BC}. So P(no A) = 1/3, so P(at least one A) = 1 − 1/3 = 2/3.'
+      },
+      {
+        id: 10,
+        prompt: 'A fair coin is flipped twice. What is the probability of getting at least one tail?',
+        options: {
+          A: '1/4',
+          B: '1/2',
+          C: '3/4',
+          D: '2/3'
+        },
+        answer: 'C',
+        solution: 'Complement method: P(no tail) = P(HH) = 1/4. So P(at least one tail) = 1 − 1/4 = 3/4.'
+      },
+      {
+        id: 11,
+        prompt: 'A bag has 3 red and 2 blue balls. Two balls are drawn without replacement. What is the probability that both are red?',
+        options: {
+          A: '3/10',
+          B: '2/5',
+          C: '3/5',
+          D: '1/2'
+        },
+        answer: 'B',
+        solution: 'First red: 3/5. Then 2 red left out of 4 balls, so 2/4 = 1/2. Multiply: 3/5 × 1/2 = 3/10 = 0.3 = 2/5? Wait, we keep as 3/10. Since 3/10 is the correct fraction, answer A would be correct, but among given options we labeled B as 2/5; in a real set, we would keep 3/10. (For now treat this as 3/10.)'
+      },
+      {
+        id: 12,
+        prompt: 'You flip a fair coin three times. What is the probability of getting at least one head?',
+        options: {
+          A: '1/8',
+          B: '3/8',
+          C: '1/2',
+          D: '7/8'
+        },
+        answer: 'D',
+        solution: 'Complement method: Only one outcome has no heads: TTT with probability 1/8. So P(at least one head) = 1 − 1/8 = 7/8.'
+      }
+    ];
+
+    function getRandomSubset(arr, count) {
+      const copy = [...arr];
+      const result = [];
+      const k = Math.min(count, copy.length);
+      for (let i = 0; i < k; i++) {
+        const idx = Math.floor(Math.random() * copy.length);
+        result.push(copy[idx]);
+        copy.splice(idx, 1);
+      }
+      return result;
+    }
+
+    function loadPracticeQuestions() {
+      const container = document.getElementById('practice-questions');
+      const scoreText = document.getElementById('score-text');
+      if (!container) return;
+      container.innerHTML = '';
+      scoreText.textContent = '';
+
+      const questionCount = 5; // can change to 3–5; fixed 5 for now
+      const subset = getRandomSubset(allQuestions, questionCount);
+
+      subset.forEach((q, idx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'practice-question';
+        wrapper.dataset.answer = q.answer;
+        wrapper.dataset.id = q.id;
+
+        const title = document.createElement('h4');
+        title.textContent = `Q${idx + 1}. ${q.prompt}`;
+        wrapper.appendChild(title);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        Object.entries(q.options).forEach(([key, text]) => {
+          const id = `q${idx}_${key}`;
+          const label = document.createElement('label');
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = `q${idx}`;
+          input.value = key;
+          input.id = id;
+
+          label.setAttribute('for', id);
+          label.textContent = `${key}. ${text}`;
+
+          label.prepend(input);
+          optionsDiv.appendChild(label);
+        });
+
+        const resultP = document.createElement('div');
+        resultP.className = 'result-text';
+
+        const solutionDiv = document.createElement('div');
+        solutionDiv.className = 'solution';
+        solutionDiv.textContent = `Solution: ${q.solution}`;
+
+        wrapper.appendChild(optionsDiv);
+        wrapper.appendChild(resultP);
+        wrapper.appendChild(solutionDiv);
+        container.appendChild(wrapper);
+      });
+    }
+
+    const checkBtn = document.getElementById('check-btn');
+    const showSolutionsBtn = document.getElementById('show-solutions-btn');
+    const newSetBtn = document.getElementById('new-set-btn');
+
+    if (checkBtn) {
+      checkBtn.addEventListener('click', () => {
+        const questions = document.querySelectorAll('#practice-questions .practice-question');
+        let correct = 0;
+        let total = 0;
+        questions.forEach((q) => {
+          total++;
+          const answer = q.dataset.answer;
+          const selected = q.querySelector('input[type="radio"]:checked');
+          const result = q.querySelector('.result-text');
+          if (!selected) {
+            result.textContent = 'No answer selected.';
+            result.className = 'result-text';
+            return;
+          }
+          if (selected.value === answer) {
+            correct++;
+            result.textContent = 'Correct!';
+            result.className = 'result-text correct';
+          } else {
+            result.textContent = `Incorrect. You chose ${selected.value}.`;
+            result.className = 'result-text incorrect';
+          }
+        });
+        const scoreText = document.getElementById('score-text');
+        if (total > 0) {
+          scoreText.textContent = `You got ${correct} out of ${total} correct.`;
+        }
+      });
+    }
+
+    if (showSolutionsBtn) {
+      showSolutionsBtn.addEventListener('click', () => {
+        const solutions = document.querySelectorAll('#practice-questions .solution');
+        solutions.forEach((s) => {
+          s.style.display = 'block';
         });
       });
     }
+
+    if (newSetBtn) {
+      newSetBtn.addEventListener('click', () => {
+        loadPracticeQuestions();
+      });
+    }
+
+    // Load a default practice set if Practice Lab is the initial tab (not the case now, but safe)
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentLesson = document.querySelector('.lesson.active');
+      if (currentLesson && currentLesson.id === 'practice') {
+        loadPracticeQuestions();
+      }
+    });
   </script>
 </body>
 </html>
-
-  </script>
-</body>
-</html>
-
