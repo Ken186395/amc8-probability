@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>AMC 8 几何讲解 · 3D 交互演示</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #fdfbff 0, #eef1f6 40%, #e3e6ee 100%);
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    header .sub-title {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    header a {
+      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: white;
+      color: #111827;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        background 0.12s ease;
+    }
+
+    header a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+      background: #f9fafb;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      padding: 16px;
+      gap: 16px;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .left-panel {
+      flex: 0 0 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 420px;
+    }
+
+    .right-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title span.badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+    }
+
+    .select-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    select {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      font-size: 0.9rem;
+      outline: none;
+      background: #f9fafb;
+    }
+
+    #problem-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .formula-card,
+    .hint-card {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f9fafb;
+      border: 1px solid rgba(209, 213, 219, 0.9);
+    }
+
+    .formula-card code {
+      font-family: SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      background: #111827;
+      color: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    .example-block {
+      margin-top: 4px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #eef2ff;
+      font-size: 0.82rem;
+      color: #1f2937;
+    }
+
+    ul {
+      padding-left: 18px;
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    .small-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 2px;
+    }
+
+    /* 控制面板（长宽高滑块） */
+    .controls-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .control-row span.label {
+      width: 40px;
+      color: #4b5563;
+    }
+
+    .control-row input[type="range"] {
+      flex: 1;
+    }
+
+    .control-row span.value {
+      width: 40px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .result-row {
+      font-size: 0.85rem;
+      color: #111827;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .result-row span.result-label {
+      color: #4b5563;
+    }
+
+    .result-row span.result-value {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 右侧：3D 区域 */
+    #three-container {
+      flex: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #eef2ff, #1f2937);
+      position: relative;
+      min-height: 340px;
+    }
+
+    #three-overlay {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      z-index: 2;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.55);
+      padding: 6px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #three-overlay span.key {
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      font-size: 0.7rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    #rendererCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .tips-card {
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: #f9fafb;
+      border: 1px dashed rgba(148, 163, 184, 0.9);
+      font-size: 0.82rem;
+      color: #4b5563;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+      }
+      .left-panel {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+      }
+      .right-panel {
+        flex: none;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>AMC 8 几何讲解 · 3D 交互实验室</h1>
+      <div class="sub-title">立体几何 · 体积表面积 · 可旋转动画演示</div>
+    </div>
+    <!-- 如果有首页，就把 href 改成你的 index.html -->
+    <a href="index.html">← 回到练习主页</a>
+  </header>
+
+  <main>
+    <!-- 左边：题目 + 讲解 + 数学计算 -->
+    <section class="panel left-panel">
+      <div class="section-title">
+        选择一个几何主题
+        <span class="badge">AMC 8</span>
+      </div>
+      <div class="select-row">
+        <label for="problemSelect">题型：</label>
+        <select id="problemSelect">
+          <option value="box">长方体体积 &amp; 表面积</option>
+          <option value="cube-net">正方体与展开图（网格）</option>
+        </select>
+        <div id="problem-meta"></div>
+      </div>
+
+      <div class="small-title">公式回顾</div>
+      <div class="formula-card">
+        <div id="formula-text"></div>
+        <div class="example-block" id="example-text"></div>
+      </div>
+
+      <div class="small-title" style="margin-top: 8px;">思路提示（AMC 8 视角）</div>
+      <div class="hint-card" id="hint-text"></div>
+
+      <!-- 控制面板（根据题型变化） -->
+      <div class="controls-panel" id="box-controls">
+        <div class="small-title" style="margin-top: 4px;">交互参数（拖动滑块观察立体变化）</div>
+        <div class="control-row">
+          <span class="label">长 L</span>
+          <input id="lenSlider" type="range" min="1" max="10" step="1" value="4" />
+          <span class="value"><span id="lenValue">4</span> u</span>
+        </div>
+        <div class="control-row">
+          <span class="label">宽 W</span>
+          <input id="widSlider" type="range" min="1" max="10" step="1" value="3" />
+          <span class="value"><span id="widValue">3</span> u</span>
+        </div>
+        <div class="control-row">
+          <span class="label">高 H</span>
+          <input id="heiSlider" type="range" min="1" max="10" step="1" value="2" />
+          <span class="value"><span id="heiValue">2</span> u</span>
+        </div>
+
+        <div class="result-row">
+          <span class="result-label">体积 V：</span>
+          <span class="result-value" id="volumeValue"></span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">表面积 S：</span>
+          <span class="result-value" id="surfaceValue"></span>
+        </div>
+      </div>
+
+      <div class="controls-panel" id="cube-controls" style="display: none;">
+        <div class="small-title" style="margin-top: 4px;">交互参数</div>
+        <div class="control-row">
+          <span class="label">棱长 a</span>
+          <input id="cubeSlider" type="range" min="1" max="8" step="1" value="3" />
+          <span class="value"><span id="cubeValue">3</span> u</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">体积 V：</span>
+          <span class="result-value" id="cubeVolume"></span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">表面积 S：</span>
+          <span class="result-value" id="cubeSurface"></span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">展开图：</span>
+          <span class="result-value">6 个正方形拼成“十字形”</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右边：Three.js 3D 立体 -->
+    <section class="panel right-panel">
+      <div class="section-title">
+        交互式 3D 演示
+        <span class="badge">拖动旋转</span>
+      </div>
+      <div id="three-container">
+        <div id="three-overlay">
+          <span>鼠标拖动旋转 · 滚轮缩放</span>
+        </div>
+        <canvas id="rendererCanvas"></canvas>
+      </div>
+
+      <div class="tips-card">
+        🧠 <b>如何用在 AMC 8：</b>  
+        很多 AMC 8 题目不会直接给你“套公式”，而是会让你
+        <ul>
+          <li>看懂立体图（长方体 / 正方体 / 堆叠方块）</li>
+          <li>自己数出“长度、宽度、高度”或“几个小方块”</li>
+          <li>再把它们代入体积或表面积公式</li>
+          <li>有时还要把立体“展开”成平面来做周长/最短路径题</li>
+        </ul>
+        建议 Lynne 自己拖动滑块和立体，多问自己两句：“这个数在图里代表哪一条边？”、“如果翻开变成展开图，会变成什么样子？”
+      </div>
+    </section>
+  </main>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    // ====== 文本内容（题目讲解） ======
+    const problems = {
+      "box": {
+        meta: "常见考点：体积、表面积、盒子装多少东西、涂色、贴标签等。",
+        formula:
+          "长方体体积：<code>V = L × W × H</code><br>表面积：<code>S = 2(LW + LH + WH)</code>",
+        example:
+          "例：一个长宽高分别为 4, 3, 2 的盒子，体积是多少？表面积是多少？<br>体积：4 × 3 × 2 = 24 立方单位<br>表面积：2(4×3 + 4×2 + 3×2) = 2(12 + 8 + 6) = 52 平方单位",
+        hint:
+          "AMC 8 里面经常会出现“一个长方体盒子装满小方块”之类的题：先用体积算出能装多少个小方块，或者用表面积算要涂多少面积油漆 / 粘多少纸。<br><br>做题时要特别注意：<ul><li>单位要统一，例如都用 cm 或都用 unit</li><li>某些边可能是“几块方砖拼起来的长度”，要数清楚</li><li>有时题目不会直接告诉你 L, W, H，需要从图里读出来</li></ul>"
+      },
+      "cube-net": {
+        meta: "常见考点：正方体体积、表面积、展开图、最短路径（小虫在盒子表面爬）。",
+        formula:
+          "正方体：每条棱长为 a，则<br>体积：<code>V = a³</code><br>表面积：<code>S = 6a²</code>",
+        example:
+          "例：一个正方体每条棱长 3，体积和表面积分别是多少？<br>体积：3³ = 27 立方单位<br>表面积：6 × 3² = 54 平方单位<br><br>展开图：6 个边长为 3 的小正方形。",
+        hint:
+          "AMC 8 常见题型：<ul><li>给你一个展开图，问能不能折成正方体</li><li>小虫从一个顶点爬到另一个顶点，走的是“盒子表面最短路”，这时要把盒子“展开”后在平面上画一条直线</li><li>涂色题：比如“把正方体的外表面全部涂色，再切成 1×1×1 的小方块，有几个小方块有 3 个面被涂色？”</li></ul>理解展开图 = 实际上是在脑子里“把立体拆开摊平”，这对解空间几何题非常有帮助。"
+      }
+    };
+
+    const problemSelect = document.getElementById("problemSelect");
+    const metaEl = document.getElementById("problem-meta");
+    const formulaEl = document.getElementById("formula-text");
+    const exampleEl = document.getElementById("example-text");
+    const hintEl = document.getElementById("hint-text");
+
+    const boxControls = document.getElementById("box-controls");
+    const cubeControls = document.getElementById("cube-controls");
+
+    const lenSlider = document.getElementById("lenSlider");
+    const widSlider = document.getElementById("widSlider");
+    const heiSlider = document.getElementById("heiSlider");
+    const lenValue = document.getElementById("lenValue");
+    const widValue = document.getElementById("widValue");
+    const heiValue = document.getElementById("heiValue");
+    const volumeValue = document.getElementById("volumeValue");
+    const surfaceValue = document.getElementById("surfaceValue");
+
+    const cubeSlider = document.getElementById("cubeSlider");
+    const cubeValue = document.getElementById("cubeValue");
+    const cubeVolume = document.getElementById("cubeVolume");
+    const cubeSurface = document.getElementById("cubeSurface");
+
+    function updateProblemText(key) {
+      const p = problems[key];
+      metaEl.innerHTML = p.meta;
+      formulaEl.innerHTML = p.formula;
+      exampleEl.innerHTML = p.example;
+      hintEl.innerHTML = p.hint;
+
+      if (key === "box") {
+        boxControls.style.display = "flex";
+        cubeControls.style.display = "none";
+      } else {
+        boxControls.style.display = "none";
+        cubeControls.style.display = "flex";
+      }
+    }
+
+    function updateBoxMath() {
+      const L = Number(lenSlider.value);
+      const W = Number(widSlider.value);
+      const H = Number(heiSlider.value);
+      lenValue.textContent = L;
+      widValue.textContent = W;
+      heiValue.textContent = H;
+      const V = L * W * H;
+      const S = 2 * (L * W + L * H + W * H);
+      volumeValue.textContent = `${V} 立方单位`;
+      surfaceValue.textContent = `${S} 平方单位`;
+    }
+
+    function updateCubeMath() {
+      const a = Number(cubeSlider.value);
+      cubeValue.textContent = a;
+      const V = a * a * a;
+      const S = 6 * a * a;
+      cubeVolume.textContent = `${V} 立方单位`;
+      cubeSurface.textContent = `${S} 平方单位`;
+    }
+
+    // ====== Three.js 场景搭建 ======
+    let scene, camera, renderer, controls;
+    let currentGroup = null;
+
+    function initThree() {
+      const canvas = document.getElementById("rendererCanvas");
+      const container = document.getElementById("three-container");
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0f172a);
+
+      const fov = 45;
+      const aspect = container.clientWidth / container.clientHeight;
+      camera = new THREE.PerspectiveCamera(fov, aspect, 0.1, 100);
+      camera.position.set(6, 5, 8);
+
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true
+      });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(container.clientWidth, container.clientHeight);
+
+      // 光照
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x0f172a, 0.7);
+      scene.add(hemiLight);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+      dirLight.position.set(5, 10, 7);
+      scene.add(dirLight);
+
+      const ambient = new THREE.AmbientLight(0xffffff, 0.2);
+      scene.add(ambient);
+
+      // 地板
+      const grid = new THREE.GridHelper(20, 20, 0x6b7280, 0x111827);
+      grid.position.y = -2;
+      scene.add(grid);
+
+      // 轨道控制器
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.rotateSpeed = 0.7;
+      controls.zoomSpeed = 0.7;
+      controls.target.set(0, 0, 0);
+
+      window.addEventListener("resize", onWindowResize);
+      animate();
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById("three-container");
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // ====== 绘制长方体 ======
+    function createBox(L, W, H) {
+      const group = new THREE.Group();
+
+      const geometry = new THREE.BoxGeometry(L, H, W);
+
+      // 主体
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x4f46e5,
+        metalness: 0.3,
+        roughness: 0.25,
+        transparent: true,
+        opacity: 0.94
+      });
+
+      const boxMesh = new THREE.Mesh(geometry, material);
+      group.add(boxMesh);
+
+      // 线框
+      const edges = new THREE.EdgesGeometry(geometry);
+      const lineMaterial = new THREE.LineBasicMaterial({ color: 0xf9fafb });
+      const line = new THREE.LineSegments(edges, lineMaterial);
+      group.add(line);
+
+      // 轻微抬高
+      group.position.y = H / 2 - 1;
+
+      return group;
+    }
+
+    // ====== 绘制正方体 + 展开图 ======
+    function createCubeWithNet(a) {
+      const group = new THREE.Group();
+
+      // 正方体主体
+      const cubeGeo = new THREE.BoxGeometry(a, a, a);
+      const cubeMat = new THREE.MeshStandardMaterial({
+        color: 0x10b981,
+        metalness: 0.3,
+        roughness: 0.25,
+        transparent: true,
+        opacity: 0.94
+      });
+      const cube = new THREE.Mesh(cubeGeo, cubeMat);
+      const edges = new THREE.EdgesGeometry(cubeGeo);
+      const lineMat = new THREE.LineBasicMaterial({ color: 0xf9fafb });
+      const cubeLines = new THREE.LineSegments(edges, lineMat);
+
+      const cubeGroup = new THREE.Group();
+      cubeGroup.add(cube);
+      cubeGroup.add(cubeLines);
+      cubeGroup.position.set(-a * 1.3, 0, 0);
+      group.add(cubeGroup);
+
+      // 展开图：6 个正方形摆成十字形
+      const planeGeo = new THREE.PlaneGeometry(a, a);
+      const planeMat = new THREE.MeshStandardMaterial({
+        color: 0x0ea5e9,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.9
+      });
+      const edgeMat = new THREE.LineBasicMaterial({ color: 0x0f172a });
+
+      const netGroup = new THREE.Group();
+      const positions = [
+        [0, 0, 0], // 中心
+        [0, a, 0],
+        [0, -a, 0],
+        [-a, 0, 0],
+        [a, 0, 0],
+        [0, 0, a] // 想象为翻起来的一个面
+      ];
+
+      positions.forEach(([x, y, z], idx) => {
+        const plane = new THREE.Mesh(planeGeo, planeMat.clone());
+        const edgesPlane = new THREE.EdgesGeometry(planeGeo);
+        const outline = new THREE.LineSegments(edgesPlane, edgeMat);
+
+        const one = new THREE.Group();
+        plane.position.set(0, 0, 0);
+        outline.position.set(0, 0, 0);
+        one.add(plane);
+        one.add(outline);
+        one.position.set(x, y, z);
+        netGroup.add(one);
+      });
+
+      // 把展开图平放在地面上（y 方向当成平面坐标）
+      netGroup.rotation.x = -Math.PI / 2;
+      netGroup.position.set(a * 1.6, -1.5, 0);
+      group.add(netGroup);
+
+      // 整体稍微抬高
+      group.position.y = -0.2;
+
+      return group;
+    }
+
+    function update3DForBox() {
+      const L = Number(lenSlider.value);
+      const W = Number(widSlider.value);
+      const H = Number(heiSlider.value);
+
+      if (currentGroup) {
+        scene.remove(currentGroup);
+      }
+      currentGroup = createBox(L, W, H);
+      scene.add(currentGroup);
+    }
+
+    function update3DForCube() {
+      const a = Number(cubeSlider.value);
+      if (currentGroup) {
+        scene.remove(currentGroup);
+      }
+      currentGroup = createCubeWithNet(a);
+      scene.add(currentGroup);
+    }
+
+    // ====== 事件绑定 ======
+    problemSelect.addEventListener("change", () => {
+      const key = problemSelect.value;
+      updateProblemText(key);
+      if (key === "box") {
+        updateBoxMath();
+        update3DForBox();
+      } else {
+        updateCubeMath();
+        update3DForCube();
+      }
+    });
+
+    lenSlider.addEventListener("input", () => {
+      updateBoxMath();
+      update3DForBox();
+    });
+    widSlider.addEventListener("input", () => {
+      updateBoxMath();
+      update3DForBox();
+    });
+    heiSlider.addEventListener("input", () => {
+      updateBoxMath();
+      update3DForBox();
+    });
+
+    cubeSlider.addEventListener("input", () => {
+      updateCubeMath();
+      update3DForCube();
+    });
+
+    // ====== 初始化 ======
+    updateProblemText("box");
+    updateBoxMath();
+    updateCubeMath();
+    initThree();
+    update3DForBox();
+  </script>
+</body>
+</html>
