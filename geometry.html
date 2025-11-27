@@ -2,704 +2,1056 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AMC 8 Geometry · 3D Interactive Lab</title>
+  <title>AMC 8 Geometry Course</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    :root {
+      --bg: #020617;
+      --card: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.18);
+      --text-main: #e5e7eb;
+      --text-sub: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.35);
+      --chip-bg: rgba(15, 23, 42, 0.7);
+      --danger: #f97373;
+    }
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
-      background: radial-gradient(circle at top, #fdfbff 0, #eef1f6 40%, #e3e6ee 100%);
-      color: #111827;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
 
     header {
-      padding: 16px 24px;
+      padding: 14px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+      background: rgba(15, 23, 42, 0.96);
       backdrop-filter: blur(16px);
-      background: rgba(255, 255, 255, 0.8);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
       position: sticky;
       top: 0;
       z-index: 10;
     }
-
-    header h1 {
-      font-size: 1.3rem;
+    .brand-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .brand-title {
+      font-size: 1.1rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
     }
-
-    header .sub-title {
-      font-size: 0.85rem;
-      color: #6b7280;
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-sub);
     }
-
-    header a {
-      font-size: 0.9rem;
-      text-decoration: none;
-      padding: 8px 14px;
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill {
+      padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: white;
-      color: #111827;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
-      cursor: pointer;
-      transition: transform 0.12s ease, boxshadow 0.12s ease,
-        background 0.12s ease;
+      border: 1px solid rgba(75, 85, 99, 0.7);
+      font-size: 0.75rem;
+      color: var(--text-sub);
     }
-
-    header a:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
-      background: #f9fafb;
+    .btn {
+      font-size: 0.82rem;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: linear-gradient(135deg, #0f172a, #0369a1);
+      color: #e5f2ff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+    }
+    .btn span.icon {
+      font-size: 0.9rem;
+    }
+    .btn:hover {
+      filter: brightness(1.05);
+      transform: translateY(-0.5px);
     }
 
     main {
       flex: 1;
       display: flex;
-      padding: 16px;
-      gap: 16px;
+      padding: 14px;
+      gap: 14px;
     }
 
-    .panel {
-      background: rgba(255, 255, 255, 0.96);
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      min-width: 220px;
+      background: rgba(15, 23, 42, 0.95);
       border-radius: 18px;
-      padding: 16px 18px;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-    }
-
-    .left-panel {
-      flex: 0 0 360px;
+      border: 1px solid var(--border-soft);
+      padding: 14px 14px 10px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-width: 420px;
+      gap: 10px;
+      position: sticky;
+      top: 70px;
+      height: fit-content;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+    }
+    .sidebar-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .chapter-list {
+      list-style: none;
+      font-size: 0.86rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .chapter-item a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      color: var(--text-sub);
+      border: 1px solid transparent;
+    }
+    .chapter-item a span.index {
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--chip-bg);
+      color: var(--accent);
+    }
+    .chapter-item a:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(51, 65, 85, 0.8);
+      color: var(--text-main);
+      text-decoration: none;
     }
 
-    .right-panel {
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tag {
+      font-size: 0.72rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-sub);
+    }
+
+    /* Content */
+    .content {
       flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      min-width: 0;
+      gap: 14px;
     }
 
+    .section-card {
+      background: rgba(15, 23, 42, 0.94);
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      padding: 16px 18px 14px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
     .section-title {
       font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-weight: 650;
       display: flex;
       align-items: center;
       gap: 6px;
     }
-
-    .section-title span.badge {
+    .section-title-index {
       font-size: 0.75rem;
-      font-weight: 600;
       padding: 2px 8px;
       border-radius: 999px;
-      background: #eef2ff;
-      color: #3730a3;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.7);
     }
-
-    label {
-      font-size: 0.85rem;
-      color: #4b5563;
+    .section-sub {
+      font-size: 0.8rem;
+      color: var(--text-sub);
     }
-
-    select {
-      padding: 8px 10px;
+    .pill-small {
+      font-size: 0.72rem;
+      padding: 3px 7px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      font-size: 0.9rem;
-      outline: none;
-      background: #f9fafb;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      color: var(--text-sub);
+      background: rgba(15, 23, 42, 0.9);
     }
 
-    .formula-card,
-    .hint-card {
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: #f9fafb;
-      border: 1px solid rgba(209, 213, 219, 0.9);
-    }
-
-    .formula-card code {
-      font-family: SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
-      font-size: 0.85rem;
-      background: #111827;
-      color: #e5e7eb;
-      padding: 2px 6px;
-      border-radius: 999px;
-    }
-
-    .example-block {
-      margin-top: 4px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      background: #eef2ff;
-      font-size: 0.82rem;
-      color: #1f2937;
-    }
-
-    ul {
-      padding-left: 18px;
-      font-size: 0.85rem;
-      color: #4b5563;
-    }
-
-    .controls-panel {
+    .section-body {
+      font-size: 0.88rem;
+      color: var(--text-main);
       display: flex;
       flex-direction: column;
       gap: 8px;
+    }
+    p {
+      line-height: 1.6;
+    }
+    ul {
+      padding-left: 18px;
+      line-height: 1.6;
+    }
+    li {
+      margin-bottom: 3px;
+    }
+
+    .formula {
+      font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 3px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.82rem;
+    }
+    .formula-block {
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.84rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .example {
+      margin-top: 4px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.5);
+    }
+    .example-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+    .example-body {
+      font-size: 0.86rem;
+    }
+
+    .solution {
+      margin-top: 6px;
+      padding: 7px 9px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.97);
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+    .solution.hidden {
+      display: none;
+    }
+    .btn-solution {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .btn-solution:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
       margin-top: 4px;
     }
-
-    .control-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-    }
-
-    .control-row span.label {
-      width: 40px;
-      color: #4b5563;
-    }
-
-    .control-row input[type="range"] {
-      flex: 1;
-    }
-
-    .control-row span.value {
-      width: 40px;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      color: #111827;
-      font-weight: 600;
-    }
-
-    #three-container {
-      flex: 1;
-      border-radius: 16px;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #eef2ff, #1f2937);
-      position: relative;
-      min-height: 340px;
-    }
-
-    #three-overlay {
-      position: absolute;
-      left: 12px;
-      top: 10px;
-      z-index: 2;
-      font-size: 0.8rem;
-      color: #e5e7eb;
-      background: rgba(15, 23, 42, 0.55);
-      padding: 6px 10px;
+    .chip {
+      font-size: 0.74rem;
+      padding: 3px 7px;
       border-radius: 999px;
-      backdrop-filter: blur(10px);
+      background: var(--chip-bg);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-sub);
     }
 
-    #rendererCanvas {
-      width: 100%;
-      height: 100%;
-      display: block;
+    .link-btn {
+      font-size: 0.8rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      background: rgba(8, 47, 73, 0.9);
+      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 4px;
+    }
+    .link-btn:hover {
+      text-decoration: none;
+      filter: brightness(1.05);
     }
 
-    .tips-card {
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: #f9fafb;
-      border: 1px dashed rgba(148, 163, 184, 0.9);
-      font-size: 0.82rem;
-      color: #4b5563;
+    .warn {
+      color: var(--danger);
+      font-weight: 500;
+      font-size: 0.84rem;
+    }
+
+    .practice-block {
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.86rem;
+    }
+    .practice-block h3 {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+    .practice-block ol {
+      padding-left: 18px;
+      margin-top: 2px;
+    }
+    .practice-block li {
+      margin-bottom: 3px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+      }
+      .sidebar {
+        position: static;
+        width: 100%;
+        max-height: none;
+        order: -1;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div>
-      <h1>AMC 8 Geometry · 3D Interactive Lab</h1>
-      <div class="sub-title">Volume · Surface Area · Nets · Spatial Visualization</div>
+    <div class="brand-block">
+      <div class="brand-title">AMC 8 Geometry Course</div>
+      <div class="brand-sub">Plane Geometry · Solid Geometry · Nets · Spatial Reasoning</div>
     </div>
-    <a href="index.html">← Back to Home</a>
+    <div class="header-right">
+      <div class="pill">Recommended: Grades 4–8 · AMC 8 / Math Contest Prep</div>
+      <button class="btn" onclick="location.href='index.html'">
+        <span class="icon">🏠</span> Back to AMC 8 Home
+      </button>
+    </div>
   </header>
 
   <main>
-    <!-- Left Panel -->
-    <section class="panel left-panel">
-      <div class="section-title">
-        Choose a Geometry Topic
-        <span class="badge">AMC 8</span>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Course Outline</div>
+      <ul class="chapter-list">
+        <li class="chapter-item"><a href="#ch0"><span class="index">0</span>Course Overview & Study Plan</a></li>
+        <li class="chapter-item"><a href="#ch1"><span class="index">1</span>Basic Figures & Angles</a></li>
+        <li class="chapter-item"><a href="#ch2"><span class="index">2</span>Perimeter & Area</a></li>
+        <li class="chapter-item"><a href="#ch3"><span class="index">3</span>Triangles & Polygons</a></li>
+        <li class="chapter-item"><a href="#ch4"><span class="index">4</span>Circles & Sectors</a></li>
+        <li class="chapter-item"><a href="#ch5"><span class="index">5</span>Solids: Volume & Surface Area</a></li>
+        <li class="chapter-item"><a href="#ch6"><span class="index">6</span>Cubes, Painting & Nets</a></li>
+        <li class="chapter-item"><a href="#ch7"><span class="index">7</span>Coordinate Geometry</a></li>
+        <li class="chapter-item"><a href="#ch8"><span class="index">8</span>AMC 8 Geometry Strategies</a></li>
+        <li class="chapter-item"><a href="#practice"><span class="index">P</span>Chapter Practice Sets</a></li>
+      </ul>
+
+      <div class="tag-row">
+        <div class="tag">Key: Volume & Area</div>
+        <div class="tag">Key: Painted Cubes & Nets</div>
+        <div class="tag">Skill: Spatial Imagination</div>
+        <div class="tag">Skill: Draw to Think</div>
       </div>
+    </aside>
 
-      <div class="select-row">
-        <label for="problemSelect">Topic:</label>
-        <select id="problemSelect">
-          <option value="box">Rectangular Prism (Volume & Surface Area)</option>
-          <option value="cube-net">Cube & Net</option>
-        </select>
-        <div id="problem-meta"></div>
-      </div>
+    <!-- Content -->
+    <section class="content">
 
-      <div class="small-title">Formulas</div>
-      <div class="formula-card">
-        <div id="formula-text"></div>
-        <div class="example-block" id="example-text"></div>
-      </div>
-
-      <div class="small-title" style="margin-top:8px;">AMC 8 Strategy Tips</div>
-      <div class="hint-card" id="hint-text"></div>
-
-      <!-- Rectangular Prism Controls -->
-      <div class="controls-panel" id="box-controls">
-        <div class="small-title" style="margin-top:4px;">Adjust Dimensions</div>
-
-        <div class="control-row">
-          <span class="label">L</span>
-          <input id="lenSlider" type="range" min="1" max="10" step="1" value="4" />
-          <span class="value"><span id="lenValue">4</span> u</span>
+      <!-- 0. Overview -->
+      <article class="section-card" id="ch0">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">0</span>
+              Course Overview & Study Plan
+            </div>
+            <div class="section-sub">
+              Each chapter has: key ideas · formulas · example problems · practice set
+            </div>
+          </div>
+          <span class="pill-small">Suggested: go 1 → 8 in order</span>
         </div>
+        <div class="section-body">
+          <p>
+            This page is a complete <strong>AMC 8 geometry course</strong>. 
+            It focuses on the topics that appear again and again in AMC 8 and similar contests.
+          </p>
+          <ul>
+            <li>Geometry is usually about <strong>one third</strong> of the AMC 8 problems.</li>
+            <li>It tests <strong>understanding of pictures</strong> and <strong>logical thinking</strong>, not just formulas.</li>
+            <li>Best way to use this page:
+              <strong>read the notes → study examples → do practice problems → then try real AMC 8 questions.</strong>
+            </li>
+          </ul>
 
-        <div class="control-row">
-          <span class="label">W</span>
-          <input id="widSlider" type="range" min="1" max="10" step="1" value="3" />
-          <span class="value"><span id="widValue">3</span> u</span>
+          <div class="chip-row">
+            <span class="chip">Draw a picture first</span>
+            <span class="chip">Mark all given lengths/angles on the figure</span>
+            <span class="chip">Break shapes into simpler pieces</span>
+            <span class="chip">Ask: “Which formula fits this?”</span>
+          </div>
+
+          <a class="link-btn" href="geometry.html">
+            💠 Open 3D Geometry Lab (Rectangular Prism / Cube & Nets)
+          </a>
         </div>
+      </article>
 
-        <div class="control-row">
-          <span class="label">H</span>
-          <input id="heiSlider" type="range" min="1" max="10" step="1" value="2" />
-          <span class="value"><span id="heiValue">2</span> u</span>
+      <!-- 1. Basic Figures & Angles -->
+      <article class="section-card" id="ch1">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">1</span>
+              Basic Figures & Angles
+            </div>
+            <div class="section-sub">
+              Points · Lines · Rays · Angles · Simple Polygons
+            </div>
+          </div>
+          <span class="pill-small">Core language: learn the English math words</span>
         </div>
+        <div class="section-body">
+          <p>Important objects:</p>
+          <ul>
+            <li>point, line, line segment, ray</li>
+            <li>angle: acute (&lt; 90°), right (= 90°), obtuse (&gt; 90°), straight (= 180°)</li>
+            <li>polygon: triangle, quadrilateral, pentagon, hexagon, etc.</li>
+          </ul>
 
-        <div class="result-row">
-          <span class="result-label">Volume:</span>
-          <span class="result-value" id="volumeValue"></span>
+          <div class="formula-block">
+            <div>Interior angle sums:</div>
+            <div class="formula">Triangle: 180°</div>
+            <div class="formula">Quadrilateral: 360°</div>
+            <div class="formula">n-gon: (n − 2) × 180°</div>
+          </div>
+
+          <div class="example">
+            <div class="example-title">Example 1 · Sum of interior angles</div>
+            <div class="example-body">
+              What is the sum of the interior angles of a heptagon (7-sided polygon)?
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Use the formula: (n − 2) × 180°.</p>
+              <p>Here n = 7, so (7 − 2) × 180° = 5 × 180° = 900°.</p>
+              <p><strong>Answer: 900°.</strong></p>
+            </div>
+          </div>
         </div>
+      </article>
 
-        <div class="result-row">
-          <span class="result-label">Surface Area:</span>
-          <span class="result-value" id="surfaceValue"></span>
+      <!-- 2. Perimeter & Area -->
+      <article class="section-card" id="ch2">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">2</span>
+              Perimeter & Area
+            </div>
+            <div class="section-sub">
+              Rectangles, squares, triangles, trapezoids, composite shapes
+            </div>
+          </div>
+          <span class="pill-small">Skill: Cut & glue shapes</span>
         </div>
-      </div>
+        <div class="section-body">
+          <p>Key formulas:</p>
+          <div class="formula-block">
+            <div>Perimeter:</div>
+            <div class="formula">Square: P = 4a</div>
+            <div class="formula">Rectangle: P = 2(a + b)</div>
+          </div>
+          <div class="formula-block">
+            <div>Area:</div>
+            <div class="formula">Square: A = a²</div>
+            <div class="formula">Rectangle: A = ab</div>
+            <div class="formula">Triangle: A = ½ × base × height</div>
+            <div class="formula">Parallelogram: A = base × height</div>
+            <div class="formula">Trapezoid: A = ½ × (base₁ + base₂) × height</div>
+          </div>
 
-      <!-- Cube Controls -->
-      <div class="controls-panel" id="cube-controls" style="display:none;">
-        <div class="small-title" style="margin-top:4px;">Adjust Edge Length</div>
+          <p>Typical AMC 8 ideas:</p>
+          <ul>
+            <li>Weird shapes that can be cut into rectangles.</li>
+            <li>“Holes” or missing pieces: subtract area.</li>
+            <li>Unit changes: cm, m, inches — keep units consistent.</li>
+          </ul>
 
-        <div class="control-row">
-          <span class="label">a</span>
-          <input id="cubeSlider" type="range" min="1" max="8" step="1" value="3" />
-          <span class="value"><span id="cubeValue">3</span> u</span>
+          <div class="example">
+            <div class="example-title">Example 2 · L-shaped area</div>
+            <div class="example-body">
+              An L-shaped region is made of two rectangles: one is 8 by 3, and one is 3 by 5 (cm). 
+              They overlap so that the total shape looks like an L (not a big full rectangle). <br>
+              Explain how you would find the total area.
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>
+                One approach: draw the whole L-shape and then imagine completing it to 
+                a big rectangle, then subtract the missing rectangle.
+              </p>
+              <p>
+                Another approach: treat the L as two rectangles whose overlap you do <em>not</em> double-count.
+              </p>
+              <p>
+                The key skill is to think in terms of rectangles and (area of big piece) − (area of missing piece).
+              </p>
+            </div>
+          </div>
         </div>
+      </article>
 
-        <div class="result-row">
-          <span class="result-label">Volume:</span>
-          <span class="result-value" id="cubeVolume"></span>
+      <!-- 3. Triangles & Polygons -->
+      <article class="section-card" id="ch3">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">3</span>
+              Triangles & Polygons
+            </div>
+            <div class="section-sub">
+              Angle chasing · isosceles triangles · regular polygons
+            </div>
+          </div>
+          <span class="pill-small">Very common in AMC 8</span>
         </div>
+        <div class="section-body">
+          <p>Important facts:</p>
+          <ul>
+            <li>Triangle angle sum: 180°.</li>
+            <li>Isosceles triangle: two equal sides → opposite two equal angles.</li>
+            <li>Equilateral triangle: all sides equal, each angle 60°.</li>
+            <li>Regular n-gon: all sides and angles equal.</li>
+          </ul>
 
-        <div class="result-row">
-          <span class="result-label">Surface Area:</span>
-          <span class="result-value" id="cubeSurface"></span>
+          <div class="example">
+            <div class="example-title">Example 3 · Base angles in an isosceles triangle</div>
+            <div class="example-body">
+              In isosceles triangle ABC, AB = AC and angle A is 40°. 
+              What are the measures of the other two angles?
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Let the base angles be x and x.</p>
+              <p>x + x + 40° = 180° → 2x = 140° → x = 70°.</p>
+              <p><strong>Each base angle is 70°.</strong></p>
+            </div>
+          </div>
+
+          <div class="example">
+            <div class="example-title">Example 4 · Interior angle of a regular polygon</div>
+            <div class="example-body">
+              Each interior angle of a regular hexagon has what measure?
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Interior angle sum for n = 6: (6 − 2) × 180° = 720°.</p>
+              <p>Each angle = 720° ÷ 6 = 120°.</p>
+              <p><strong>Answer: 120°.</strong></p>
+            </div>
+          </div>
         </div>
+      </article>
 
-        <div class="result-row">
-          <span class="result-label">Net:</span>
-          <span class="result-value">6 equal squares forming a cross shape</span>
+      <!-- 4. Circles & Sectors -->
+      <article class="section-card" id="ch4">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">4</span>
+              Circles & Sectors
+            </div>
+            <div class="section-sub">
+              Circumference · area · simple sectors · circular paths
+            </div>
+          </div>
+          <span class="pill-small">Use π ≈ 3.14 or 22/7</span>
         </div>
-      </div>
-    </section>
+        <div class="section-body">
+          <div class="formula-block">
+            <div>Basic formulas:</div>
+            <div class="formula">Circumference: C = 2πr</div>
+            <div class="formula">Area: A = πr²</div>
+            <div class="formula">Sector area (angle θ): A = (θ / 360°) × πr²</div>
+          </div>
 
-    <!-- Right Panel (3D View) -->
-    <section class="panel right-panel">
-      <div class="section-title">
-        3D Interactive Visualization
-        <span class="badge">Drag to Rotate</span>
-      </div>
+          <p>Common ideas in contests:</p>
+          <ul>
+            <li>Track running around a circular field.</li>
+            <li>Fraction of a circle (e.g., quarter circle, half circle).</li>
+            <li>Shaded regions: circle minus triangle/rectangle, etc.</li>
+          </ul>
 
-      <div id="three-container">
-        <div id="three-overlay">Drag to rotate · Scroll to zoom</div>
-        <canvas id="rendererCanvas"></canvas>
-      </div>
+          <div class="example">
+            <div class="example-title">Example 5 · Running on a circular track</div>
+            <div class="example-body">
+              A circular track has radius 10 meters. A runner runs 3 full laps. 
+              How far does the runner travel? (Use π ≈ 3.14.)
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>One lap length: C = 2πr = 2 × 3.14 × 10 = 62.8 m.</p>
+              <p>Three laps: 3 × 62.8 = 188.4 m.</p>
+              <p><strong>Answer: 188.4 m.</strong></p>
+            </div>
+          </div>
+        </div>
+      </article>
 
-      <div class="tips-card">
-        🧠 <b>How this helps AMC 8:</b>
-        <ul>
-          <li>Visualize length, width, height clearly.</li>
-          <li>Understand how volume and surface area change when dimensions change.</li>
-          <li>Recognize cube nets and surface unfolding patterns.</li>
-          <li>Train spatial reasoning for 3D→2D conversion.</li>
-        </ul>
-      </div>
+      <!-- 5. Solids -->
+      <article class="section-card" id="ch5">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">5</span>
+              Solids: Volume & Surface Area
+            </div>
+            <div class="section-sub">
+              Rectangular prisms · cubes · stacking unit cubes
+            </div>
+          </div>
+          <span class="pill-small">Great to combine with 3D Lab</span>
+        </div>
+        <div class="section-body">
+          <p>Important solids:</p>
+          <ul>
+            <li>Cube: side length a.</li>
+            <li>Rectangular prism: length L, width W, height H.</li>
+          </ul>
+
+          <div class="formula-block">
+            <div>Volume:</div>
+            <div class="formula">Cube: V = a³</div>
+            <div class="formula">Rectangular prism: V = L × W × H</div>
+          </div>
+          <div class="formula-block">
+            <div>Surface area:</div>
+            <div class="formula">Cube: S = 6a²</div>
+            <div class="formula">Rectangular prism: S = 2(LW + LH + WH)</div>
+          </div>
+
+          <p>Typical AMC 8 questions:</p>
+          <ul>
+            <li>How many small cubes fit inside a big box?</li>
+            <li>How much paper is needed to wrap a box? (surface area)</li>
+          </ul>
+
+          <a class="link-btn" href="geometry.html">
+            🧊 Open 3D Solid Viewer (Drag to change L/W/H and see volume & area)
+          </a>
+
+          <div class="example">
+            <div class="example-title">Example 6 · Packing unit cubes</div>
+            <div class="example-body">
+              A rectangular box measures 8 by 6 by 4 units. 
+              How many 2×2×2 cubes can fit inside the box with no gaps?
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Along each dimension:</p>
+              <ul>
+                <li>Length: 8 ÷ 2 = 4 cubes</li>
+                <li>Width: 6 ÷ 2 = 3 cubes</li>
+                <li>Height: 4 ÷ 2 = 2 cubes</li>
+              </ul>
+              <p>Total: 4 × 3 × 2 = 24 cubes.</p>
+              <p><strong>Answer: 24.</strong></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6. Cubes, painting & nets -->
+      <article class="section-card" id="ch6">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">6</span>
+              Cubes, Painting & Nets
+            </div>
+            <div class="section-sub">
+              Painted cubes · cube nets · shortest paths on surfaces
+            </div>
+          </div>
+          <span class="pill-small">High-yield contest topic</span>
+        </div>
+        <div class="section-body">
+          <p>Classic “painted cube” setup:</p>
+          <ul>
+            <li>Start with an n × n × n cube.</li>
+            <li>Paint the entire outside.</li>
+            <li>Cut into 1×1×1 small cubes.</li>
+            <li>Count how many small cubes have 3, 2, 1, or 0 painted faces.</li>
+          </ul>
+
+          <div class="formula-block">
+            <div>Useful results (n ≥ 2):</div>
+            <div class="formula">3 painted faces: always 8 (the corners)</div>
+            <div class="formula">2 painted faces: 12 × (n − 2)</div>
+            <div class="formula">1 painted face: 6 × (n − 2)²</div>
+            <div class="formula">0 painted faces: (n − 2)³</div>
+          </div>
+
+          <div class="example">
+            <div class="example-title">Example 7 · 3×3×3 painted cube</div>
+            <div class="example-body">
+              A 3×3×3 cube is painted on the outside and cut into unit cubes. 
+              How many small cubes have exactly 2 faces painted?
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Here n = 3.</p>
+              <p>Number with 2 faces painted: 12 × (n − 2) = 12 × 1 = 12.</p>
+              <p><strong>Answer: 12.</strong></p>
+            </div>
+          </div>
+
+          <p class="warn">
+            For net problems, practice drawing different nets and “folding them in your mind”.
+            Our 3D lab can help you see a cube next to a possible net.
+          </p>
+        </div>
+      </article>
+
+      <!-- 7. Coordinate geometry -->
+      <article class="section-card" id="ch7">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">7</span>
+              Coordinate Geometry
+            </div>
+            <div class="section-sub">
+              Points · distance on grid lines · midpoints · counting squares
+            </div>
+          </div>
+          <span class="pill-small">Shows up often in recent AMC 8</span>
+        </div>
+        <div class="section-body">
+          <p>Concepts to know:</p>
+          <ul>
+            <li>Coordinate plane: (x, y) → move right x, move up y.</li>
+            <li>Horizontal/vertical distance: just subtract x or y coordinates.</li>
+            <li>Midpoint: ((x₁ + x₂)/2, (y₁ + y₂)/2).</li>
+            <li>Counting squares in a grid to estimate area.</li>
+          </ul>
+
+          <div class="example">
+            <div class="example-title">Example 8 · Distance between points</div>
+            <div class="example-body">
+              Find the distance between A(2, 3) and B(7, 3).
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Same y-coordinate → horizontal segment.</p>
+              <p>Distance = |7 − 2| = 5.</p>
+              <p><strong>Answer: 5.</strong></p>
+            </div>
+          </div>
+
+          <div class="example">
+            <div class="example-title">Example 9 · Midpoint</div>
+            <div class="example-body">
+              Find the midpoint of the segment from (−1, 4) to (5, 0).
+            </div>
+            <button class="btn-solution">Show solution</button>
+            <div class="solution hidden">
+              <p>Midpoint formula: ((x₁ + x₂)/2, (y₁ + y₂)/2).</p>
+              <p>x: (−1 + 5)/2 = 4/2 = 2</p>
+              <p>y: (4 + 0)/2 = 4/2 = 2</p>
+              <p><strong>Midpoint is (2, 2).</strong></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8. Strategies -->
+      <article class="section-card" id="ch8">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">8</span>
+              AMC 8 Geometry Strategy Summary
+            </div>
+            <div class="section-sub">
+              Draw · simplify · choose good viewpoints · use symmetry
+            </div>
+          </div>
+          <span class="pill-small">For test day</span>
+        </div>
+        <div class="section-body">
+          <ul>
+            <li><strong>Step 1: Draw or re-draw the figure.</strong></li>
+            <li><strong>Step 2: Mark all given numbers.</strong> Don’t keep them only in your head.</li>
+            <li><strong>Step 3: Ask “Which formula or idea applies?”</strong> Area? Volume? Angles? Nets?</li>
+            <li><strong>Step 4: Can I cut or extend the figure?</strong> Many problems become easy after 1 smart line.</li>
+            <li><strong>Step 5: Check units and reasonableness.</strong> Does the answer size make sense?</li>
+          </ul>
+
+          <p>Good habits:</p>
+          <ul>
+            <li>Test extreme cases to see if an answer could be wrong.</li>
+            <li>Use symmetry: in squares, regular polygons, cubes, etc.</li>
+            <li>If stuck, estimate and use answer choices to guide your thinking.</li>
+          </ul>
+
+          <div class="example">
+            <div class="example-title">Training tip · How to use this page well</div>
+            <div class="example-body">
+              <ul>
+                <li>Each day: pick one chapter, read notes, and fully solve 2–3 examples.</li>
+                <li>Then do at least 5 practice problems from that chapter’s practice set.</li>
+                <li>Once per week: try some real AMC 8 geometry problems and see which chapter they belong to.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Practice Sets -->
+      <article class="section-card" id="practice">
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-index">P</span>
+              Chapter Practice Sets (All English)
+            </div>
+            <div class="section-sub">
+              Use these after reading each chapter. Try to solve without a calculator.
+            </div>
+          </div>
+          <span class="pill-small">No solutions here — can add answer key later</span>
+        </div>
+        <div class="section-body">
+          <p>
+            Below are practice problems grouped by chapter. 
+            You can copy them into a notebook, or print this page and use it as a workbook.
+          </p>
+
+          <!-- Chapter 1 practice -->
+          <div class="practice-block">
+            <h3>Chapter 1 · Basic Figures & Angles (10 problems)</h3>
+            <ol>
+              <li>How many degrees are in a straight angle?</li>
+              <li>How many degrees are in the sum of the three angles of any triangle?</li>
+              <li>A quadrilateral has three angles measuring 90°, 80°, and 70°. What is the measure of the fourth angle?</li>
+              <li>What is the sum of the interior angles of an octagon?</li>
+              <li>How many sides does a polygon have if the sum of its interior angles is 900°?</li>
+              <li>If two angles form a straight line and one is 35°, what is the measure of the other?</li>
+              <li>Two angles are complementary and one is 26°. What is the other angle?</li>
+              <li>Two angles are supplementary and one is 112°. What is the other angle?</li>
+              <li>In a triangle, two angles are 45° and 65°. What is the third angle?</li>
+              <li>A regular polygon has each interior angle equal to 150°. How many sides does it have?</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 2 practice -->
+          <div class="practice-block">
+            <h3>Chapter 2 · Perimeter & Area (10 problems)</h3>
+            <ol>
+              <li>A rectangle has length 9 cm and width 5 cm. Find its perimeter.</li>
+              <li>A square has area 49 cm². What is its perimeter?</li>
+              <li>A rectangle has perimeter 30 cm and width 4 cm. What is its length?</li>
+              <li>Find the area of a triangle with base 10 cm and height 6 cm.</li>
+              <li>The bases of a trapezoid are 8 cm and 12 cm, and its height is 5 cm. Find its area.</li>
+              <li>A parallelogram has base 11 cm and height 7 cm. What is its area?</li>
+              <li>A rectangle is 3 cm by 12 cm. A square is 6 cm by 6 cm. Which shape has greater area and by how much?</li>
+              <li>An L-shaped figure is formed by a 6×4 rectangle on the left and a 2×4 rectangle attached on the right at the top. What is the total area?</li>
+              <li>A 10×8 rectangle has a 4×3 rectangle cut out of one corner. What is the remaining area?</li>
+              <li>A square garden has perimeter 32 m. A path of width 1 m is built all around the outside. 
+                  What is the area of the path?</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 3 practice -->
+          <div class="practice-block">
+            <h3>Chapter 3 · Triangles & Polygons (10 problems)</h3>
+            <ol>
+              <li>Classify a triangle with side lengths 5, 5, and 8 (by sides and by angles if possible).</li>
+              <li>In a triangle, two angles are 35° and 85°. What type of triangle is it (acute, right, obtuse)?</li>
+              <li>Two equal angles of an isosceles triangle measure 52° each. What is the third angle?</li>
+              <li>Two sides of a triangle have lengths 6 and 7. What is the smallest possible integer length of the third side?</li>
+              <li>Two sides of a triangle have lengths 6 and 7. What is the largest possible integer length of the third side?</li>
+              <li>The exterior angle of a triangle at one vertex is 125°. The remote interior angles are 50° and x°. Find x.</li>
+              <li>A regular pentagon has each interior angle equal to what measure?</li>
+              <li>The ratio of two angles in a triangle is 2:3, and the third angle is 40°. Find all three angles.</li>
+              <li>An equilateral triangle has side length 10 cm. Find its perimeter.</li>
+              <li>A triangle has angles 40°, 60°, and 80°. Which is the largest side?</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 4 practice -->
+          <div class="practice-block">
+            <h3>Chapter 4 · Circles & Sectors (10 problems)</h3>
+            <ol>
+              <li>A circle has radius 7 cm. Find its circumference (use π ≈ 22/7).</li>
+              <li>A circle has diameter 10 m. Find its circumference (use π ≈ 3.14).</li>
+              <li>A circle has radius 5 cm. Find its area (use π ≈ 3.14).</li>
+              <li>The area of a circle is 100π cm². What is its radius?</li>
+              <li>A wheel of radius 0.5 m makes 20 full turns. How far does it travel? (Use π ≈ 3.14.)</li>
+              <li>A pizza is cut into 8 equal slices. What fraction of the circle is 3 slices? What is the central angle of 3 slices?</li>
+              <li>A sector has central angle 90° in a circle of radius 6 cm. Find the area of the sector (π ≈ 3.14).</li>
+              <li>A quarter-circle of radius 4 cm is cut out. What is its area?</li>
+              <li>A circular track has circumference 400 m. A runner goes 2.5 laps. How far does the runner go?</li>
+              <li>A circular garden has area 64π m². A fence is built around it. What is the length of the fence?</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 5 practice -->
+          <div class="practice-block">
+            <h3>Chapter 5 · Solids: Volume & Surface Area (10 problems)</h3>
+            <ol>
+              <li>A cube has side length 4 cm. Find its volume.</li>
+              <li>A cube has volume 125 cm³. What is its side length?</li>
+              <li>A rectangular prism has dimensions 5 cm, 6 cm, and 2 cm. Find its volume.</li>
+              <li>A box measures 10 cm by 4 cm by 3 cm. How many 1×1×1 cubes fit inside?</li>
+              <li>A cube has side length 7 cm. Find its surface area.</li>
+              <li>A rectangular prism has dimensions 3, 4, and 5. Find its surface area.</li>
+              <li>A cube’s surface area is 96 cm². What is its edge length?</li>
+              <li>Water fills a box that is 8 cm by 5 cm by 10 cm. What is the volume of the water in cubic centimeters?</li>
+              <li>A cube of side 3 cm is glued on top of a cube of side 5 cm (sharing one face). 
+                  What is the total volume of the solid?</li>
+              <li>A box has length 12 cm, width 9 cm, and height 4 cm. 
+                  How many 3×3×2 blocks can fit inside, if they are packed perfectly with no gaps?</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 6 practice -->
+          <div class="practice-block">
+            <h3>Chapter 6 · Cubes, Painting & Nets (10 problems)</h3>
+            <ol>
+              <li>A 4×4×4 cube is painted on the outside and cut into unit cubes. How many small cubes are there in total?</li>
+              <li>For the 4×4×4 painted cube, how many small cubes have 3 faces painted?</li>
+              <li>For the same cube, how many small cubes have exactly 2 faces painted?</li>
+              <li>For the same cube, how many small cubes have exactly 1 face painted?</li>
+              <li>For the same cube, how many small cubes have no faces painted?</li>
+              <li>A 5×5×5 cube is painted on the outside and cut into unit cubes. How many cubes have exactly 2 faces painted?</li>
+              <li>Draw a net of a cube. How many squares are in the net? Describe one pattern that works.</li>
+              <li>Why does a “plus-shaped” net with four squares in a row and one above and one below one of the middle squares fold into a cube?</li>
+              <li>An ant walks along the surface of a cube from one vertex to the opposite vertex (not through the inside). 
+                  What strategy might you use to find the shortest path?</li>
+              <li>A 3×3×3 cube has one small cube removed from a corner (after painting). 
+                  How many painted faces does the removed small cube have?</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 7 practice -->
+          <div class="practice-block">
+            <h3>Chapter 7 · Coordinate Geometry (10 problems)</h3>
+            <ol>
+              <li>Plot the points A(1, 2), B(4, 2), C(4, 6), and D(1, 6). What shape do they form?</li>
+              <li>Find the distance between (−3, 1) and (2, 1).</li>
+              <li>Find the distance between (5, 7) and (5, 2).</li>
+              <li>What is the midpoint of the segment from (0, 0) to (8, 4)?</li>
+              <li>Points A(2, 3), B(6, 3), C(6, 7), and D(2, 7) form a rectangle. Find its perimeter.</li>
+              <li>On a grid, a rectangle’s vertices are (1, 1), (5, 1), (5, 4), and (1, 4). Find its area.</li>
+              <li>A point moves from (2, 2) to (2, −3) to (−1, −3). 
+                  What is the total distance traveled?</li>
+              <li>The midpoint of a segment is (4, −1), and one endpoint is (6, 3). What is the other endpoint?</li>
+              <li>On a coordinate grid, a square has side length 3 and one vertex at (1, 1). 
+                  If the square’s sides are parallel to the axes, what are the coordinates of the opposite vertex?</li>
+              <li>A triangle has vertices (0, 0), (4, 0), and (4, 3). Find its area.</li>
+            </ol>
+          </div>
+
+          <!-- Chapter 8 practice -->
+          <div class="practice-block">
+            <h3>Chapter 8 · Strategy & Mixed Geometry (10 problems)</h3>
+            <ol>
+              <li>You see a problem with a strange shape made of rectangles. What is the first thing you should do?</li>
+              <li>Why is it useful to mark all given numbers directly on the diagram?</li>
+              <li>Give one example of using symmetry to simplify a geometry problem.</li>
+              <li>You are not sure which formula to use. What strategy can help you decide?</li>
+              <li>Explain why checking units (cm vs m, area vs length) is important.</li>
+              <li>A problem has answer choices 2, 20, 200, 2000, and you know the shape is small. 
+                  Which answers can you probably eliminate quickly?</li>
+              <li>Describe how you would “draw a simpler version” of a hard 3D problem to understand it.</li>
+              <li>Why can a quick sketch sometimes save time on AMC 8?</li>
+              <li>You solved a problem and got an answer of −5 for a length. What should you think?</li>
+              <li>Pick any one practice problem above and explain out loud why your answer makes sense.</li>
+            </ol>
+          </div>
+        </div>
+      </article>
     </section>
   </main>
-  <!-- Three.js Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/examples/js/controls/OrbitControls.js"></script>
 
   <script>
-    // =============================
-    // Text Content for Topics
-    // =============================
-
-    const problems = {
-      "box": {
-        meta: "Common AMC 8 topic: volume, surface area, packing cubes, painting faces.",
-        formula:
-          "Volume: <code>V = L × W × H</code><br>Surface Area: <code>S = 2(LW + LH + WH)</code>",
-        example:
-          "Example: A rectangular prism with L=4, W=3, H=2.<br>Volume = 4 × 3 × 2 = 24 cubic units.<br>Surface Area = 2(12 + 8 + 6) = 52 sq units.",
-        hint:
-          "AMC 8 often gives box problems:<ul>" +
-          "<li>Count how many small cubes fit inside (use volume).</li>" +
-          "<li>Find how much paint or wrapping paper is needed (use surface area).</li>" +
-          "<li>Careful: lengths must be read correctly from diagrams.</li>" +
-          "<li>Units matter! Make sure all match.</li>" +
-          "</ul>"
-      },
-
-      "cube-net": {
-        meta: "Cube volume, surface area, nets, shortest path on surfaces.",
-        formula:
-          "Volume: <code>V = a³</code><br>Surface Area: <code>S = 6a²</code>",
-        example:
-          "Example: A cube with edge a = 3.<br>Volume = 27 cubic units.<br>Surface Area = 54 sq units.<br>Net: 6 equal squares.",
-        hint:
-          "AMC 8 cube questions often ask:<ul>" +
-          "<li>Which nets can fold into a cube?</li>" +
-          "<li>Shortest path on a cube surface (flatten the net).</li>" +
-          "<li>Painted cube problems (count faces with 1, 2, or 3 painted sides).</li>" +
-          "</ul>"
-      }
-    };
-
-    // =============================
-    // HTML Elements
-    // =============================
-
-    const problemSelect = document.getElementById("problemSelect");
-    const metaEl = document.getElementById("problem-meta");
-    const formulaEl = document.getElementById("formula-text");
-    const exampleEl = document.getElementById("example-text");
-    const hintEl = document.getElementById("hint-text");
-
-    const boxControls = document.getElementById("box-controls");
-    const cubeControls = document.getElementById("cube-controls");
-
-    const lenSlider = document.getElementById("lenSlider");
-    const widSlider = document.getElementById("widSlider");
-    const heiSlider = document.getElementById("heiSlider");
-
-    const lenValue = document.getElementById("lenValue");
-    const widValue = document.getElementById("widValue");
-    const heiValue = document.getElementById("heiValue");
-
-    const volumeValue = document.getElementById("volumeValue");
-    const surfaceValue = document.getElementById("surfaceValue");
-
-    const cubeSlider = document.getElementById("cubeSlider");
-    const cubeValue = document.getElementById("cubeValue");
-    const cubeVolume = document.getElementById("cubeVolume");
-    const cubeSurface = document.getElementById("cubeSurface");
-
-    // =============================
-    // Update Text Section
-    // =============================
-
-    function updateProblemText(key) {
-      const p = problems[key];
-      metaEl.innerHTML = p.meta;
-      formulaEl.innerHTML = p.formula;
-      exampleEl.innerHTML = p.example;
-      hintEl.innerHTML = p.hint;
-
-      if (key === "box") {
-        boxControls.style.display = "flex";
-        cubeControls.style.display = "none";
-      } else {
-        boxControls.style.display = "none";
-        cubeControls.style.display = "flex";
-      }
-    }
-
-    function updateBoxMath() {
-      const L = Number(lenSlider.value);
-      const W = Number(widSlider.value);
-      const H = Number(heiSlider.value);
-
-      lenValue.textContent = L;
-      widValue.textContent = W;
-      heiValue.textContent = H;
-
-      const V = L * W * H;
-      const S = 2 * (L * W + L * H + W * H);
-
-      volumeValue.textContent = `${V} cubic units`;
-      surfaceValue.textContent = `${S} square units`;
-    }
-
-    function updateCubeMath() {
-      const a = Number(cubeSlider.value);
-      cubeValue.textContent = a;
-
-      const V = a * a * a;
-      const S = 6 * a * a;
-
-      cubeVolume.textContent = `${V} cubic units`;
-      cubeSurface.textContent = `${S} square units`;
-    }
-
-    // =============================
-    // THREE.JS SETUP
-    // =============================
-
-    let scene, camera, renderer, controls;
-    let currentGroup = null;
-
-    function initThree() {
-      const canvas = document.getElementById("rendererCanvas");
-      const container = document.getElementById("three-container");
-
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0f172a);
-
-      const aspect = container.clientWidth / container.clientHeight;
-      camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100);
-      camera.position.set(6, 5, 8);
-
-      renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true
+    // Toggle example solutions
+    document.querySelectorAll(".btn-solution").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const solution = this.nextElementSibling;
+        if (!solution) return;
+        const hidden = solution.classList.contains("hidden");
+        solution.classList.toggle("hidden");
+        this.textContent = hidden ? "Hide solution" : "Show solution";
       });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(container.clientWidth, container.clientHeight);
-
-      // Lighting
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x0f172a, 0.7));
-
-      const dir = new THREE.DirectionalLight(0xffffff, 0.9);
-      dir.position.set(5, 10, 7);
-      scene.add(dir);
-
-      scene.add(new THREE.AmbientLight(0xffffff, 0.2));
-
-      // Ground Grid
-      const grid = new THREE.GridHelper(20, 20, 0x6b7280, 0x111827);
-      grid.position.y = -2;
-      scene.add(grid);
-
-      // Controls
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.08;
-
-      window.addEventListener("resize", onWindowResize);
-      animate();
-    }
-
-    function onWindowResize() {
-      const container = document.getElementById("three-container");
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    }
-
-    // =============================
-    // Draw Rectangular Prism
-    // =============================
-
-    function createBox(L, W, H) {
-      const group = new THREE.Group();
-      const geo = new THREE.BoxGeometry(L, H, W);
-
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0x4f46e5,
-        metalness: 0.3,
-        roughness: 0.25,
-        opacity: 0.95,
-        transparent: true
-      });
-
-      const mesh = new THREE.Mesh(geo, mat);
-      group.add(mesh);
-
-      const edges = new THREE.EdgesGeometry(geo);
-      const line = new THREE.LineSegments(
-        edges,
-        new THREE.LineBasicMaterial({ color: 0xffffff })
-      );
-      group.add(line);
-
-      group.position.y = H / 2 - 1;
-      return group;
-    }
-
-    // =============================
-    // Draw Cube + Net
-    // =============================
-
-    function createCubeWithNet(a) {
-      const group = new THREE.Group();
-
-      const cubeGeo = new THREE.BoxGeometry(a, a, a);
-      const cubeMat = new THREE.MeshStandardMaterial({
-        color: 0x10b981,
-        metalness: 0.3,
-        roughness: 0.25,
-        transparent: true,
-        opacity: 0.95
-      });
-
-      const cube = new THREE.Mesh(cubeGeo, cubeMat);
-      const edges = new THREE.EdgesGeometry(cubeGeo);
-      const outline = new THREE.LineSegments(
-        edges,
-        new THREE.LineBasicMaterial({ color: 0xffffff })
-      );
-
-      const cubeGroup = new THREE.Group();
-      cubeGroup.add(cube);
-      cubeGroup.add(outline);
-      cubeGroup.position.set(-a * 1.3, 0, 0);
-      group.add(cubeGroup);
-
-      // Net
-      const planeGeo = new THREE.PlaneGeometry(a, a);
-      const planeMat = new THREE.MeshStandardMaterial({
-        color: 0x0ea5e9,
-        side: THREE.DoubleSide,
-        opacity: 0.9,
-        transparent: true
-      });
-
-      const netGroup = new THREE.Group();
-      const positions = [
-        [0, 0, 0],
-        [0, a, 0],
-        [0, -a, 0],
-        [-a, 0, 0],
-        [a, 0, 0],
-        [0, 0, a]
-      ];
-
-      positions.forEach(([x, y, z]) => {
-        const p = new THREE.Mesh(planeGeo, planeMat.clone());
-        const e = new THREE.EdgesGeometry(planeGeo);
-        const l = new THREE.LineSegments(
-          e,
-          new THREE.LineBasicMaterial({ color: 0x0f172a })
-        );
-
-        const g = new THREE.Group();
-        g.add(p);
-        g.add(l);
-        g.position.set(x, y, z);
-        netGroup.add(g);
-      });
-
-      netGroup.rotation.x = -Math.PI / 2;
-      netGroup.position.set(a * 1.6, -1.5, 0);
-      group.add(netGroup);
-
-      return group;
-    }
-
-    // =============================
-    // Update 3D View
-    // =============================
-
-    function update3DForBox() {
-      const L = Number(lenSlider.value);
-      const W = Number(widSlider.value);
-      const H = Number(heiSlider.value);
-
-      if (currentGroup) scene.remove(currentGroup);
-      currentGroup = createBox(L, W, H);
-      scene.add(currentGroup);
-    }
-
-    function update3DForCube() {
-      const a = Number(cubeSlider.value);
-
-      if (currentGroup) scene.remove(currentGroup);
-      currentGroup = createCubeWithNet(a);
-      scene.add(currentGroup);
-    }
-
-    // =============================
-    // Event Listeners
-    // =============================
-
-    problemSelect.addEventListener("change", () => {
-      const key = problemSelect.value;
-      updateProblemText(key);
-
-      if (key === "box") {
-        updateBoxMath();
-        update3DForBox();
-      } else {
-        updateCubeMath();
-        update3DForCube();
-      }
     });
-
-    lenSlider.addEventListener("input", () => {
-      updateBoxMath();
-      update3DForBox();
-    });
-
-    widSlider.addEventListener("input", () => {
-      updateBoxMath();
-      update3DForBox();
-    });
-
-    heiSlider.addEventListener("input", () => {
-      updateBoxMath();
-      update3DForBox();
-    });
-
-    cubeSlider.addEventListener("input", () => {
-      updateCubeMath();
-      update3DForCube();
-    });
-
-    // =============================
-    // INITIALIZE EVERYTHING
-    // =============================
-
-    updateProblemText("box");
-    updateBoxMath();
-    updateCubeMath();
-
-    initThree();
-    update3DForBox();
   </script>
-
 </body>
 </html>
-
-
