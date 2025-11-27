@@ -1,7 +1,7 @@
 {
   "name": "AMC8 Probability Lab",
   "short_name": "AMC8 Prob",
-  "start_url": "amc8_probability.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#f5f7fb",
   "theme_color": "#2563eb",
@@ -18,3 +18,4 @@
     }
   ]
 }
+
